@@ -57,7 +57,7 @@ jobs:
 
     - name: 🔧 Verify EAS CLI
       run: |
-        npx @expo/eas-cli --version
+        npx eas-cli --version
         echo "EAS CLI verified successfully"
 
     - name: 🏗 Setup Gradle cache
@@ -81,7 +81,7 @@ jobs:
       if: github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == ''
       run: |
         echo "Building APK with preview profile..."
-        npx @expo/eas-cli build --platform android --profile preview --local --output ./build-output/app.apk --no-wait
+        npx eas-cli build --platform android --profile preview --local --output ./build-output/app.apk --no-wait
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
@@ -89,7 +89,7 @@ jobs:
       if: github.event.inputs.build_type == 'aab'
       run: |
         echo "Building AAB with production profile..."
-        npx @expo/eas-cli build --platform android --profile production --local --output ./build-output/app.aab --no-wait
+        npx eas-cli build --platform android --profile production --local --output ./build-output/app.aab --no-wait
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
