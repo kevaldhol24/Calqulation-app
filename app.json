@@ -13,7 +13,7 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
-      "**/*"
+      "assets/**/*"
     ],
     "ios": {
       "supportsTablet": true,
@@ -30,7 +30,9 @@
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "enableProguard": true,
+      "enableShrinkResources": true
     },
     "web": {
       "favicon": "./assets/favicon.png",
