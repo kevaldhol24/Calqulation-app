@@ -1,12 +1,26 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Switch, Linking, RefreshControl } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useTheme } from '../context/ThemeContext';
+import React, { useState, useCallback } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Switch,
+  Linking,
+  RefreshControl,
+  StatusBar,
+} from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import { useTheme } from "../context/ThemeContext";
 
 export default function SettingsScreen() {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
   const [notifications, setNotifications] = React.useState(true);
   const [darkMode, setDarkMode] = React.useState(false);
@@ -29,26 +43,26 @@ export default function SettingsScreen() {
         console.log("Don't know how to open URI: " + url);
       }
     } catch (error) {
-      console.error('An error occurred', error);
+      console.error("An error occurred", error);
     }
   };
 
   const settingsOptions = [
     {
-      id: 'notifications',
-      title: 'Push Notifications',
-      description: 'Receive updates and financial tips',
-      icon: 'notifications',
-      type: 'switch',
+      id: "notifications",
+      title: "Push Notifications",
+      description: "Receive updates and financial tips",
+      icon: "notifications",
+      type: "switch",
       value: notifications,
       onValueChange: setNotifications,
     },
     {
-      id: 'autoRefresh',
-      title: 'Auto Refresh',
-      description: 'Automatically refresh data when app opens',
-      icon: 'refresh',
-      type: 'switch',
+      id: "autoRefresh",
+      title: "Auto Refresh",
+      description: "Automatically refresh data when app opens",
+      icon: "refresh",
+      type: "switch",
       value: autoRefresh,
       onValueChange: setAutoRefresh,
     },
@@ -56,46 +70,46 @@ export default function SettingsScreen() {
 
   const actionOptions = [
     {
-      id: 'about',
-      title: 'About Us',
-      description: 'Learn more about Calqulation',
-      icon: 'information-circle',
-      onPress: () => openURL('https://www.calqulation.com/about-us'),
+      id: "about",
+      title: "About Us",
+      description: "Learn more about Calqulation",
+      icon: "information-circle",
+      onPress: () => openURL("https://www.calqulation.com/about-us"),
     },
     {
-      id: 'help',
-      title: 'Help & Support',
-      description: 'Get help and contact support',
-      icon: 'help-circle',
-      onPress: () => openURL('https://www.calqulation.com/contact'),
+      id: "help",
+      title: "Help & Support",
+      description: "Get help and contact support",
+      icon: "help-circle",
+      onPress: () => openURL("https://www.calqulation.com/contact"),
     },
     {
-      id: 'privacy',
-      title: 'Privacy Policy',
-      description: 'Read our privacy policy',
-      icon: 'shield-checkmark',
-      onPress: () => openURL('https://www.calqulation.com/privacy-policy'),
+      id: "privacy",
+      title: "Privacy Policy",
+      description: "Read our privacy policy",
+      icon: "shield-checkmark",
+      onPress: () => openURL("https://www.calqulation.com/privacy-policy"),
     },
     {
-      id: 'terms',
-      title: 'Terms of Service',
-      description: 'Read terms and conditions',
-      icon: 'document-text',
-      onPress: () => openURL('https://www.calqulation.com/terms-of-service'),
+      id: "terms",
+      title: "Terms of Service",
+      description: "Read terms and conditions",
+      icon: "document-text",
+      onPress: () => openURL("https://www.calqulation.com/terms-of-service"),
     },
     {
-      id: 'disclaimer',
-      title: 'Disclaimer',
-      description: 'Important disclaimer information',
-      icon: 'warning',
-      onPress: () => openURL('https://www.calqulation.com/disclaimer'),
+      id: "disclaimer",
+      title: "Disclaimer",
+      description: "Important disclaimer information",
+      icon: "warning",
+      onPress: () => openURL("https://www.calqulation.com/disclaimer"),
     },
     {
-      id: 'feedback',
-      title: 'Send Feedback',
-      description: 'Help us improve the app',
-      icon: 'chatbubble',
-      onPress: () => openURL('https://www.calqulation.com/contact'),
+      id: "feedback",
+      title: "Send Feedback",
+      description: "Help us improve the app",
+      icon: "chatbubble",
+      onPress: () => openURL("https://www.calqulation.com/contact"),
     },
   ];
 
@@ -110,12 +124,12 @@ export default function SettingsScreen() {
           <Text style={styles.settingDescription}>{item.description}</Text>
         </View>
       </View>
-      {item.type === 'switch' ? (
+      {item.type === "switch" ? (
         <Switch
           value={item.value}
           onValueChange={item.onValueChange}
-          trackColor={{ false: '#767577', true: theme.colors.primary }}
-          thumbColor={item.value ? '#ffffff' : '#f4f3f4'}
+          trackColor={{ false: "#767577", true: theme.colors.primary }}
+          thumbColor={item.value ? "#ffffff" : "#f4f3f4"}
         />
       ) : null}
     </View>
@@ -142,17 +156,40 @@ export default function SettingsScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="#6e11b0"
+        translucent
+      />
       <LinearGradient
-        colors={[theme.colors.primary, theme.colors.secondary]}
-        style={styles.header}
+        colors={[
+          theme.colors.primary,
+          theme.colors.primary,
+          theme.colors.secondary,
+        ]}
+        locations={[0, 0.3, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={[styles.header, { paddingTop: insets.top + 20 }]}
       >
-        <Text style={styles.headerTitle}>Settings</Text>
-        <Text style={styles.headerSubtitle}>Customize your app experience</Text>
+        <View style={styles.headerContent}>
+          <View style={styles.headerLeft}>
+            <View style={styles.headerIconContainer}>
+              <Ionicons name="settings" size={24} color="#ffffff" />
+            </View>
+            <View>
+              <Text style={styles.headerTitle}>Settings</Text>
+              <Text style={styles.headerSubtitle}>
+                Customize your app experience
+              </Text>
+            </View>
+          </View>
+        </View>
       </LinearGradient>
-      
-      <ScrollView 
-        style={styles.content} 
+
+      <ScrollView
+        style={styles.content}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -185,31 +222,52 @@ export default function SettingsScreen() {
           </Text>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    paddingBottom: 20,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+  },
+  headerContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  headerIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
   },
   headerTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#ffffff',
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#ffffff",
     marginBottom: 4,
+    letterSpacing: -0.5,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: '#ffffff',
-    opacity: 0.8,
+    color: "#ffffff",
+    opacity: 0.9,
+    letterSpacing: -0.2,
   },
   content: {
     flex: 1,
@@ -220,48 +278,48 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
     marginBottom: 12,
     marginLeft: 4,
   },
   sectionContent: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 12,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
   settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: "#f0f0f0",
   },
   actionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: "#f0f0f0",
   },
   settingLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
   },
   iconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#6e11b020',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#6e11b020",
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 12,
   },
   settingInfo: {
@@ -269,35 +327,35 @@ const styles = StyleSheet.create({
   },
   settingTitle: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
     marginBottom: 2,
   },
   settingDescription: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     lineHeight: 18,
   },
   appInfo: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 24,
     marginTop: 20,
   },
   appName: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#6e11b0',
+    fontWeight: "bold",
+    color: "#6e11b0",
     marginBottom: 4,
   },
   appVersion: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginBottom: 8,
   },
   appDescription: {
     fontSize: 14,
-    color: '#888',
-    textAlign: 'center',
+    color: "#888",
+    textAlign: "center",
     lineHeight: 20,
     maxWidth: 280,
   },

@@ -1,15 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../context/ThemeContext';
 import { WEBVIEW_HEADERS, WEBVIEW_URLS, WEBVIEW_CONFIG } from '../constants/webview';
+import { ToolHeader } from '../components/ToolHeader';
+import { useWebViewBackNavigation } from '../hooks';
 
 export default function SIPCalculatorScreen() {
   const theme = useTheme();
   const webViewRef = useRef<WebView>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  const { handleNavigationStateChange } = useWebViewBackNavigation(webViewRef);
 
   const handleWebViewLoad = () => {
     setIsLoading(false);
@@ -20,8 +23,19 @@ export default function SIPCalculatorScreen() {
     setError('Failed to load SIP Calculator. Please check your internet connection.');
   };
 
+  const handleRefresh = () => {
+    if (webViewRef.current) {
+      webViewRef.current.reload();
+    }
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <ToolHeader 
+        title="SIP Calculator" 
+        icon="trending-up" 
+        onRefresh={handleRefresh}
+      />
       {error ? (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{error}</Text>
@@ -39,6 +53,7 @@ export default function SIPCalculatorScreen() {
             onLoad={handleWebViewLoad}
             onError={handleWebViewError}
             onHttpError={handleWebViewError}
+            onNavigationStateChange={handleNavigationStateChange}
             {...WEBVIEW_CONFIG}
             renderLoading={() => (
               <View style={styles.loadingContainer}>
@@ -56,14 +71,14 @@ export default function SIPCalculatorScreen() {
           )}
         </>
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#fafbff',
   },
   webview: {
     flex: 1,

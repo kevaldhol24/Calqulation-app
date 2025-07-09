@@ -14,14 +14,17 @@ export const WEBVIEW_HEADERS = {
   'X-App-Name': 'Calqulation'
 };
 
+export const WEBVIEW_BASE_URL = 'https://www.calqulation.com';
+// export const WEBVIEW_BASE_URL = 'http://localhost:3000'; // For local development, change to production URL before deployment
+
 /**
  * URLs for different sections of the website
  */
 export const WEBVIEW_URLS = {
-  SIP_CALCULATOR: 'https://www.calqulation.com/tool/sip-calculator',
-  EMI_CALCULATOR: 'https://www.calqulation.com/tool/emi-calculator',
-  BLOG: 'https://www.calqulation.com/blog',
-  HOME: 'https://www.calqulation.com'
+  SIP_CALCULATOR: `${WEBVIEW_BASE_URL}/tool/sip-calculator`,
+  EMI_CALCULATOR: `${WEBVIEW_BASE_URL}/tool/emi-calculator`,
+  BLOG: `${WEBVIEW_BASE_URL}/blog`,
+  HOME: `${WEBVIEW_BASE_URL}`
 };
 
 /**

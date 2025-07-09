@@ -62,7 +62,7 @@ export default function App() {
     <ThemeProvider>
       <SafeAreaProvider>
         <View style={styles.container} onLayout={onLayoutRootView}>
-          <StatusBar style="auto" />
+          <StatusBar style="light" />
           <AppNavigator />
         </View>
       </SafeAreaProvider>
