@@ -4,21 +4,8 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    branches: [     - name: 📦 Upload APK artifact
-      if: (github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == '') && hashFiles('./build-output/app.apk') != ''
-      uses: actions/upload-artifact@v4
-      with:
-        name: android-apk-${{ github.sha }}
-        path: ./build-output/app.apk
-        retention-days: 30
-
-    - name: 📦 Upload AAB artifact
-      if: github.event.inputs.build_type == 'aab' && hashFiles('./build-output/app.aab') != ''
-      uses: actions/upload-artifact@v4
-      with:
-        name: android-aab-${{ github.sha }}
-        path: ./build-output/app.aab
-        retention-days: 30ow_dispatch:
+    branches: [ main ]
+  workflow_dispatch:
     inputs:
       build_type:
         description: 'Build type (apk or aab)'
