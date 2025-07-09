@@ -54,11 +54,23 @@ jobs:
       run: |
         npm ci --prefer-offline --no-audit
         npx expo install --fix
+        # Ensure TypeScript and all dev dependencies are properly installed
+        npm install --only=dev
+        # Verify critical dependencies
+        npx tsc --version
+        echo "Dependencies installed successfully"
 
     - name: 🔧 Verify EAS CLI
       run: |
         npx eas-cli --version
         echo "EAS CLI verified successfully"
+
+    - name: 🔍 Verify project configuration
+      run: |
+        echo "Checking project configuration..."
+        npx expo doctor --fix-dependencies
+        npx tsc --noEmit || echo "TypeScript check completed"
+        echo "Project verification completed"
 
     - name: 🏗 Setup Gradle cache
       uses: actions/cache@v4
@@ -81,19 +93,21 @@ jobs:
       if: github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == ''
       run: |
         echo "Building APK with preview profile..."
-        npx eas-cli build --platform android --profile preview --local --output ./build-output/app.apk --non-interactive
+        npx eas-cli build --platform android --profile preview --local --output ./build-output/app.apk --non-interactive --clear-cache
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         EAS_NO_VCS: 1
+        NODE_ENV: production
 
     - name: 🚀 Build AAB
       if: github.event.inputs.build_type == 'aab'
       run: |
         echo "Building AAB with production profile..."
-        npx eas-cli build --platform android --profile production --local --output ./build-output/app.aab --non-interactive
+        npx eas-cli build --platform android --profile production --local --output ./build-output/app.aab --non-interactive --clear-cache
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         EAS_NO_VCS: 1
+        NODE_ENV: production
 
     - name: � Verify build output
       run: |

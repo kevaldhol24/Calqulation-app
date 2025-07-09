@@ -30,9 +30,7 @@
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "edgeToEdgeEnabled": true,
-      "enableProguard": true,
-      "enableShrinkResources": true
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png",

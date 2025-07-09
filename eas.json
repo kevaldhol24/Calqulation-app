@@ -29,6 +29,9 @@
       },
       "env": {
         "NODE_ENV": "production"
+      },
+      "optimization": {
+        "minify": true
       }
     }
   },
