@@ -1,10 +1,10 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-import LoanComparisonScreen from '../screens/LoanComparisonScreen';
-import PersonalLoanCalculatorScreen from '../screens/PersonalLoanCalculatorScreen';
-import CarLoanCalculatorScreen from '../screens/CarLoanCalculatorScreen';
-import OfflineEMICalculatorScreen from '../screens/OfflineEMICalculatorScreen';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "../screens/HomeScreen";
+import LoanComparisonScreen from "../screens/LoanComparisonScreen";
+import PersonalLoanCalculatorScreen from "../screens/PersonalLoanCalculatorScreen";
+import CarLoanCalculatorScreen from "../screens/CarLoanCalculatorScreen";
+import OfflineEMICalculatorScreen from "../screens/OfflineEMICalculatorScreen";
 
 const Stack = createStackNavigator();
 
@@ -15,25 +15,19 @@ export default function HomeStackNavigator() {
         headerShown: false,
       }}
     >
-      <Stack.Screen 
-        name="HomeMain" 
-        component={HomeScreen} 
+      <Stack.Screen name="HomeMain" component={HomeScreen} />
+      <Stack.Screen name="LoanComparison" component={LoanComparisonScreen} />
+      <Stack.Screen
+        name="PersonalLoanCalculator"
+        component={PersonalLoanCalculatorScreen}
       />
-      <Stack.Screen 
-        name="LoanComparison" 
-        component={LoanComparisonScreen} 
+      <Stack.Screen
+        name="CarLoanCalculator"
+        component={CarLoanCalculatorScreen}
       />
-      <Stack.Screen 
-        name="PersonalLoanCalculator" 
-        component={PersonalLoanCalculatorScreen} 
-      />
-      <Stack.Screen 
-        name="CarLoanCalculator" 
-        component={CarLoanCalculatorScreen} 
-      />
-      <Stack.Screen 
-        name="OfflineEMICalculator" 
-        component={OfflineEMICalculatorScreen} 
+      <Stack.Screen
+        name="OfflineEMICalculator"
+        component={OfflineEMICalculatorScreen}
       />
     </Stack.Navigator>
   );

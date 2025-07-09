@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,10 +8,14 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '../context/ThemeContext';
-import { CurrencyOption, CURRENCIES, currencyUtils } from '../utils/currencyManager';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../context/ThemeContext";
+import {
+  CurrencyOption,
+  CURRENCIES,
+  currencyUtils,
+} from "../utils/currencyManager";
 
 interface CurrencyPickerProps {
   selectedCurrency: CurrencyOption;
@@ -36,7 +40,7 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
       await onCurrencyChange(currency);
       setModalVisible(false);
     } catch (error) {
-      console.error('Error changing currency:', error);
+      console.error("Error changing currency:", error);
     } finally {
       setUpdating(false);
     }
@@ -46,7 +50,8 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
     <TouchableOpacity
       style={[
         styles.currencyItem,
-        selectedCurrency.currency === item.currency && styles.selectedCurrencyItem,
+        selectedCurrency.currency === item.currency &&
+          styles.selectedCurrencyItem,
       ]}
       onPress={() => handleCurrencySelect(item)}
       activeOpacity={0.7}
@@ -70,8 +75,13 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
   return (
     <>
       <TouchableOpacity
-        style={[styles.pickerButton, (disabled || isLoading || updating) && styles.disabledButton]}
-        onPress={() => !(disabled || isLoading || updating) && setModalVisible(true)}
+        style={[
+          styles.pickerButton,
+          (disabled || isLoading || updating) && styles.disabledButton,
+        ]}
+        onPress={() =>
+          !(disabled || isLoading || updating) && setModalVisible(true)
+        }
         activeOpacity={0.7}
       >
         <View style={styles.pickerButtonContent}>
@@ -80,16 +90,18 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
           </Text>
           <View style={styles.selectedInfo}>
             <Text style={styles.selectedSymbol}>{selectedCurrency.symbol}</Text>
-            <Text style={styles.selectedCurrency}>{selectedCurrency.currency}</Text>
+            <Text style={styles.selectedCurrency}>
+              {selectedCurrency.currency}
+            </Text>
           </View>
         </View>
-        {(isLoading || updating) ? (
+        {isLoading || updating ? (
           <ActivityIndicator size="small" color={theme.colors.primary} />
         ) : (
-          <Ionicons 
-            name="chevron-down" 
-            size={20} 
-            color={(disabled || isLoading || updating) ? '#ccc' : '#666'} 
+          <Ionicons
+            name="chevron-down"
+            size={20}
+            color={disabled || isLoading || updating ? "#ccc" : "#666"}
           />
         )}
       </TouchableOpacity>
@@ -109,17 +121,21 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
                 onPress={() => !updating && setModalVisible(false)}
                 disabled={updating}
               >
-                <Ionicons name="close" size={24} color={updating ? '#ccc' : '#333'} />
+                <Ionicons
+                  name="close"
+                  size={24}
+                  color={updating ? "#ccc" : "#333"}
+                />
               </TouchableOpacity>
             </View>
-            
+
             {updating && (
               <View style={styles.loadingOverlay}>
                 <ActivityIndicator size="large" color={theme.colors.primary} />
                 <Text style={styles.loadingText}>Updating currency...</Text>
               </View>
             )}
-            
+
             <FlatList
               data={CURRENCIES}
               renderItem={renderCurrencyItem}
@@ -135,25 +151,25 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
   );
 };
 
-const { height: screenHeight } = Dimensions.get('window');
+const { height: screenHeight } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   pickerButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#f8f9fa',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#f8f9fa",
     padding: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#e9ecef',
+    borderColor: "#e9ecef",
   },
   disabledButton: {
     opacity: 0.5,
   },
   pickerButtonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
   },
   flagEmoji: {
@@ -161,44 +177,44 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   selectedInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   selectedSymbol: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
     marginRight: 8,
   },
   selectedCurrency: {
     fontSize: 14,
-    color: '#666',
-    fontWeight: '500',
+    color: "#666",
+    fontWeight: "500",
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: screenHeight * 0.7,
     paddingBottom: 20,
   },
   modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
+    borderBottomColor: "#e9ecef",
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
   },
   closeButton: {
     padding: 4,
@@ -207,60 +223,60 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   currencyItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 16,
     paddingHorizontal: 16,
     borderRadius: 12,
     marginVertical: 4,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: "#f8f9fa",
   },
   selectedCurrencyItem: {
-    backgroundColor: '#6e11b020',
+    backgroundColor: "#6e11b020",
     borderWidth: 1,
-    borderColor: '#6e11b040',
+    borderColor: "#6e11b040",
   },
   currencyItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
   },
   currencyInfo: {
     marginRight: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   currencySymbol: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
   },
   currencyCode: {
     fontSize: 12,
-    color: '#666',
-    fontWeight: '500',
+    color: "#666",
+    fontWeight: "500",
   },
   currencyLabel: {
     fontSize: 14,
-    color: '#333',
+    color: "#333",
     flex: 1,
   },
   loadingOverlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 60,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    alignItems: "center",
+    justifyContent: "center",
     zIndex: 10,
   },
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#333',
-    fontWeight: '500',
+    color: "#333",
+    fontWeight: "500",
   },
   disabledList: {
     opacity: 0.5,

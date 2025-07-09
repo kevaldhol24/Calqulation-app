@@ -10,137 +10,137 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const CURRENCY_STORAGE_KEY = 'calqulation_selected_currency';
 
 export interface CurrencyOption {
-  label: string;
-  symbol: string;
-  currency: string;
-  iso: string;
-  flag: string;
-  style: string;
-  currencyDisplay: string;
-  maximumFractionDigits: number;
+    label: string;
+    symbol: string;
+    currency: string;
+    iso: string;
+    flag: string;
+    style: string;
+    currencyDisplay: string;
+    maximumFractionDigits: number;
 }
 
 export const CURRENCIES: CurrencyOption[] = [
-  {
-    label: "₹ INR - Indian Rupee",
-    symbol: "₹",
-    currency: "INR",
-    iso: "en-IN",
-    flag: "IN",
-    style: "currency",
-    currencyDisplay: "symbol",
-    maximumFractionDigits: 2,
-  },
-  {
-    label: "$ USD - US Dollar",
-    symbol: "$",
-    currency: "USD",
-    iso: "en-US",
-    flag: "US",
-    style: "currency",
-    currencyDisplay: "symbol",
-    maximumFractionDigits: 2,
-  },
-  {
-    label: "£ GBP - British Pound",
-    symbol: "£",
-    currency: "GBP",
-    iso: "en-GB",
-    flag: "GB",
-    style: "currency",
-    currencyDisplay: "symbol",
-    maximumFractionDigits: 2,
-  },
-  {
-    label: "€ EUR - Euro",
-    symbol: "€",
-    currency: "EUR",
-    iso: "en-EU",
-    flag: "EU",
-    style: "currency",
-    currencyDisplay: "symbol",
-    maximumFractionDigits: 2,
-  },
-  {
-    label: "¥ JPY - Japanese Yen",
-    symbol: "¥",
-    currency: "JPY",
-    iso: "ja-JP",
-    flag: "JP",
-    style: "currency",
-    currencyDisplay: "symbol",
-    maximumFractionDigits: 0,
-  },
-  {
-    label: "C$ CAD - Canadian Dollar",
-    symbol: "C$",
-    currency: "CAD",
-    iso: "en-CA",
-    flag: "CA",
-    style: "currency",
-    currencyDisplay: "symbol",
-    maximumFractionDigits: 2,
-  },
-  {
-    label: "A$ AUD - Australian Dollar",
-    symbol: "A$",
-    currency: "AUD",
-    iso: "en-AU",
-    flag: "AU",
-    style: "currency",
-    currencyDisplay: "symbol",
-    maximumFractionDigits: 2,
-  },
-  {
-    label: "₩ KRW - South Korean Won",
-    symbol: "₩",
-    currency: "KRW",
-    iso: "ko-KR",
-    flag: "KR",
-    style: "currency",
-    currencyDisplay: "symbol",
-    maximumFractionDigits: 0,
-  },
+    {
+        label: "₹ INR - Indian Rupee",
+        symbol: "₹",
+        currency: "INR",
+        iso: "en-IN",
+        flag: "IN",
+        style: "currency",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 2,
+    },
+    {
+        label: "$ USD - US Dollar",
+        symbol: "$",
+        currency: "USD",
+        iso: "en-US",
+        flag: "US",
+        style: "currency",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 2,
+    },
+    {
+        label: "£ GBP - British Pound",
+        symbol: "£",
+        currency: "GBP",
+        iso: "en-GB",
+        flag: "GB",
+        style: "currency",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 2,
+    },
+    {
+        label: "€ EUR - Euro",
+        symbol: "€",
+        currency: "EUR",
+        iso: "en-EU",
+        flag: "EU",
+        style: "currency",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 2,
+    },
+    {
+        label: "¥ JPY - Japanese Yen",
+        symbol: "¥",
+        currency: "JPY",
+        iso: "ja-JP",
+        flag: "JP",
+        style: "currency",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 0,
+    },
+    {
+        label: "C$ CAD - Canadian Dollar",
+        symbol: "C$",
+        currency: "CAD",
+        iso: "en-CA",
+        flag: "CA",
+        style: "currency",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 2,
+    },
+    {
+        label: "A$ AUD - Australian Dollar",
+        symbol: "A$",
+        currency: "AUD",
+        iso: "en-AU",
+        flag: "AU",
+        style: "currency",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 2,
+    },
+    {
+        label: "₩ KRW - South Korean Won",
+        symbol: "₩",
+        currency: "KRW",
+        iso: "ko-KR",
+        flag: "KR",
+        style: "currency",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 0,
+    },
 ];
 
 /**
  * Get the default currency (Indian Rupee)
  */
 export const getDefaultCurrency = (): CurrencyOption => {
-  return CURRENCIES[0]; // INR
+    return CURRENCIES[0]; // INR
 };
 
 /**
  * Find currency by currency code
  */
 export const getCurrencyByCode = (currencyCode: string): CurrencyOption | undefined => {
-  return CURRENCIES.find(currency => currency.currency === currencyCode);
+    return CURRENCIES.find(currency => currency.currency === currencyCode);
 };
 
 /**
  * Create currency cookie data for Calqulation website
  */
 export const createCurrencyCookieData = (currency: CurrencyOption): string => {
-  return JSON.stringify({
-    label: currency.label,
-    symbol: currency.symbol,
-    currency: currency.currency,
-    iso: currency.iso,
-    flag: currency.flag,
-    style: currency.style,
-    currencyDisplay: currency.currencyDisplay,
-    maximumFractionDigits: currency.maximumFractionDigits,
-  });
+    return JSON.stringify({
+        label: currency.label,
+        symbol: currency.symbol,
+        currency: currency.currency,
+        iso: currency.iso,
+        flag: currency.flag,
+        style: currency.style,
+        currencyDisplay: currency.currencyDisplay,
+        maximumFractionDigits: currency.maximumFractionDigits,
+    });
 };
 
 /**
  * Create JavaScript code to set currency cookie in WebView and immediately apply changes
  */
 export const createCurrencyCookieScript = (currency: CurrencyOption): string => {
-  const cookieData = createCurrencyCookieData(currency);
-  const escapedData = cookieData.replace(/"/g, '\\"');
-  
-  return `
+    const cookieData = createCurrencyCookieData(currency);
+    const escapedData = cookieData.replace(/"/g, '\\"');
+
+    return `
     (function() {
       try {
         const cookieValue = "${escapedData}";
@@ -223,65 +223,65 @@ export const createCurrencyCookieScript = (currency: CurrencyOption): string => 
  * Currency utilities for managing preferences
  */
 export const currencyUtils = {
-  /**
-   * Get stored currency preference from AsyncStorage
-   */
-  getStoredCurrency: async (): Promise<CurrencyOption> => {
-    try {
-      const storedCurrencyJson = await AsyncStorage.getItem(CURRENCY_STORAGE_KEY);
-      if (storedCurrencyJson) {
-        const storedCurrency = JSON.parse(storedCurrencyJson);
-        // Validate that the stored currency is still in our list
-        const foundCurrency = getCurrencyByCode(storedCurrency.currency);
-        if (foundCurrency) {
-          return foundCurrency;
+    /**
+     * Get stored currency preference from AsyncStorage
+     */
+    getStoredCurrency: async (): Promise<CurrencyOption> => {
+        try {
+            const storedCurrencyJson = await AsyncStorage.getItem(CURRENCY_STORAGE_KEY);
+            if (storedCurrencyJson) {
+                const storedCurrency = JSON.parse(storedCurrencyJson);
+                // Validate that the stored currency is still in our list
+                const foundCurrency = getCurrencyByCode(storedCurrency.currency);
+                if (foundCurrency) {
+                    return foundCurrency;
+                }
+            }
+        } catch (error) {
+            console.error('Error getting stored currency:', error);
         }
-      }
-    } catch (error) {
-      console.error('Error getting stored currency:', error);
-    }
-    // Return default if nothing stored or error
-    return getDefaultCurrency();
-  },
+        // Return default if nothing stored or error
+        return getDefaultCurrency();
+    },
 
-  /**
-   * Store currency preference in AsyncStorage
-   */
-  storeCurrency: async (currency: CurrencyOption): Promise<void> => {
-    try {
-      await AsyncStorage.setItem(CURRENCY_STORAGE_KEY, JSON.stringify(currency));
-      console.log('Currency preference stored:', currency.currency);
-    } catch (error) {
-      console.error('Error storing currency preference:', error);
-    }
-  },
+    /**
+     * Store currency preference in AsyncStorage
+     */
+    storeCurrency: async (currency: CurrencyOption): Promise<void> => {
+        try {
+            await AsyncStorage.setItem(CURRENCY_STORAGE_KEY, JSON.stringify(currency));
+            console.log('Currency preference stored:', currency.currency);
+        } catch (error) {
+            console.error('Error storing currency preference:', error);
+        }
+    },
 
-  /**
-   * Clear stored currency preference
-   */
-  clearStoredCurrency: async (): Promise<void> => {
-    try {
-      await AsyncStorage.removeItem(CURRENCY_STORAGE_KEY);
-      console.log('Currency preference cleared');
-    } catch (error) {
-      console.error('Error clearing currency preference:', error);
-    }
-  },
+    /**
+     * Clear stored currency preference
+     */
+    clearStoredCurrency: async (): Promise<void> => {
+        try {
+            await AsyncStorage.removeItem(CURRENCY_STORAGE_KEY);
+            console.log('Currency preference cleared');
+        } catch (error) {
+            console.error('Error clearing currency preference:', error);
+        }
+    },
 
-  /**
-   * Get flag emoji for currency
-   */
-  getFlagEmoji: (countryCode: string): string => {
-    const flagMap: { [key: string]: string } = {
-      'IN': '🇮🇳',
-      'US': '🇺🇸',
-      'GB': '🇬🇧',
-      'EU': '🇪🇺',
-      'JP': '🇯🇵',
-      'CA': '🇨🇦',
-      'AU': '🇦🇺',
-      'KR': '🇰🇷',
-    };
-    return flagMap[countryCode] || '🌍';
-  },
+    /**
+     * Get flag emoji for currency
+     */
+    getFlagEmoji: (countryCode: string): string => {
+        const flagMap: { [key: string]: string } = {
+            'IN': '🇮🇳',
+            'US': '🇺🇸',
+            'GB': '🇬🇧',
+            'EU': '🇪🇺',
+            'JP': '🇯🇵',
+            'CA': '🇨🇦',
+            'AU': '🇦🇺',
+            'KR': '🇰🇷',
+        };
+        return flagMap[countryCode] || '🌍';
+    },
 };

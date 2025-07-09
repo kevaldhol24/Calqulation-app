@@ -9,24 +9,24 @@ import PersonalLoanCalculatorScreen from './PersonalLoanCalculatorScreen';
 import CarLoanCalculatorScreen from './CarLoanCalculatorScreen';
 
 export {
-  HomeScreen,
-  SIPCalculatorScreen,
-  EMICalculatorScreen,
-  OfflineEMICalculatorScreen,
-  BlogScreen,
-  SettingsScreen,
-  LoanComparisonScreen,
-  PersonalLoanCalculatorScreen,
-  CarLoanCalculatorScreen,
+    HomeScreen,
+    SIPCalculatorScreen,
+    EMICalculatorScreen,
+    OfflineEMICalculatorScreen,
+    BlogScreen,
+    SettingsScreen,
+    LoanComparisonScreen,
+    PersonalLoanCalculatorScreen,
+    CarLoanCalculatorScreen,
 };
 
 export default {
-  HomeScreen,
-  SIPCalculatorScreen,
-  EMICalculatorScreen,
-  BlogScreen,
-  SettingsScreen,
-  LoanComparisonScreen,
-  PersonalLoanCalculatorScreen,
-  CarLoanCalculatorScreen,
+    HomeScreen,
+    SIPCalculatorScreen,
+    EMICalculatorScreen,
+    BlogScreen,
+    SettingsScreen,
+    LoanComparisonScreen,
+    PersonalLoanCalculatorScreen,
+    CarLoanCalculatorScreen,
 };

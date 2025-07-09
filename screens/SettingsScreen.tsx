@@ -20,11 +20,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../context/ThemeContext";
 import { useCurrency } from "../context/CurrencyContext";
 import { CurrencyPicker } from "../components/CurrencyPicker";
-import { 
-  CurrencyOption, 
-  getDefaultCurrency, 
+import {
+  CurrencyOption,
+  getDefaultCurrency,
   createCurrencyCookieScript,
-  currencyUtils 
+  currencyUtils,
 } from "../utils/currencyManager";
 import { WebViewCookieInjector } from "../utils/webViewCookies";
 
@@ -61,10 +61,10 @@ export default function SettingsScreen() {
   const handleCurrencyChange = async (selectedCurrency: CurrencyOption) => {
     try {
       await currency.setCurrency(selectedCurrency);
-      
+
       // Show success message with more detailed info
       Alert.alert(
-        'Currency Updated Successfully! 🎉',
+        "Currency Updated Successfully! 🎉",
         `Your currency preference has been set to ${selectedCurrency.currency} (${selectedCurrency.symbol}). 
 
 ✅ All calculator tools will now use ${selectedCurrency.currency}
@@ -72,14 +72,14 @@ export default function SettingsScreen() {
 ✅ Open WebViews have been updated automatically
 
 Note: If you don't see the change immediately, try refreshing the calculator page.`,
-        [{ text: 'Got it!' }]
+        [{ text: "Got it!" }]
       );
     } catch (error) {
-      console.error('Error updating currency:', error);
+      console.error("Error updating currency:", error);
       Alert.alert(
-        'Update Failed',
-        'Failed to update currency preference. Please check your connection and try again.',
-        [{ text: 'OK' }]
+        "Update Failed",
+        "Failed to update currency preference. Please check your connection and try again.",
+        [{ text: "OK" }]
       );
     }
   };
@@ -160,10 +160,13 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
   ];
 
   const renderSettingItem = (item: any) => (
-    <View key={item.id} style={[
-      styles.settingItem,
-      item.type === "currency" && styles.currencySettingItem
-    ]}>
+    <View
+      key={item.id}
+      style={[
+        styles.settingItem,
+        item.type === "currency" && styles.currencySettingItem,
+      ]}
+    >
       <View style={styles.settingLeft}>
         <View style={styles.iconContainer}>
           <Ionicons name={item.icon} size={20} color={theme.colors.primary} />

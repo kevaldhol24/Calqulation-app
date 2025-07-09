@@ -1,21 +1,25 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { useTheme } from '../context/ThemeContext';
-import { useCurrency } from '../context/CurrencyContext';
-import { WEBVIEW_HEADERS, WEBVIEW_URLS, WEBVIEW_CONFIG } from '../constants/webview';
-import { ToolHeader } from '../components/ToolHeader';
-import { useWebViewBackNavigation } from '../hooks';
-import { WebViewCookieInjector } from '../utils/webViewCookies';
-import { createCurrencyCookieScript } from '../utils/currencyManager';
+import React, { useState, useRef, useEffect } from "react";
+import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
+import { WebView } from "react-native-webview";
+import { useTheme } from "../context/ThemeContext";
+import { useCurrency } from "../context/CurrencyContext";
+import {
+  WEBVIEW_HEADERS,
+  WEBVIEW_URLS,
+  WEBVIEW_CONFIG,
+} from "../constants/webview";
+import { ToolHeader } from "../components/ToolHeader";
+import { useWebViewBackNavigation } from "../hooks";
+import { WebViewCookieInjector } from "../utils/webViewCookies";
+import { createCurrencyCookieScript } from "../utils/currencyManager";
 
 export default function BlogScreen() {
   const theme = useTheme();
   const currency = useCurrency();
   const webViewRef = useRef<WebView>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
-  
+  const [error, setError] = useState("");
+
   const { handleNavigationStateChange } = useWebViewBackNavigation(webViewRef);
 
   // Register WebView with cookie injector
@@ -23,7 +27,7 @@ export default function BlogScreen() {
     if (webViewRef.current) {
       WebViewCookieInjector.registerWebView(webViewRef.current);
     }
-    
+
     return () => {
       if (webViewRef.current) {
         WebViewCookieInjector.unregisterWebView(webViewRef.current);
@@ -33,17 +37,19 @@ export default function BlogScreen() {
 
   const handleWebViewLoad = () => {
     setIsLoading(false);
-    
+
     // Inject current currency cookie on load
     if (webViewRef.current && !currency.isLoading) {
-      const cookieScript = createCurrencyCookieScript(currency.selectedCurrency);
+      const cookieScript = createCurrencyCookieScript(
+        currency.selectedCurrency
+      );
       webViewRef.current.injectJavaScript(cookieScript);
     }
   };
 
   const handleWebViewError = () => {
     setIsLoading(false);
-    setError('Failed to load blog. Please check your internet connection.');
+    setError("Failed to load blog. Please check your internet connection.");
   };
 
   const handleRefresh = () => {
@@ -54,9 +60,9 @@ export default function BlogScreen() {
 
   return (
     <View style={styles.container}>
-      <ToolHeader 
-        title="Financial Blog" 
-        icon="library" 
+      <ToolHeader
+        title="Financial Blog"
+        icon="library"
         onRefresh={handleRefresh}
       />
       {error ? (
@@ -68,9 +74,9 @@ export default function BlogScreen() {
         <>
           <WebView
             ref={webViewRef}
-            source={{ 
+            source={{
               uri: WEBVIEW_URLS.BLOG,
-              headers: WEBVIEW_HEADERS
+              headers: WEBVIEW_HEADERS,
             }}
             style={styles.webview}
             onLoad={handleWebViewLoad}
@@ -85,7 +91,7 @@ export default function BlogScreen() {
               </View>
             )}
           />
-          
+
           {isLoading && (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color={theme.colors.warning} />
@@ -101,54 +107,54 @@ export default function BlogScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafbff',
+    backgroundColor: "#fafbff",
   },
   webview: {
     flex: 1,
   },
   loadingContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f5f5f5",
+    alignItems: "center",
+    justifyContent: "center",
   },
   loadingOverlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(245, 245, 245, 0.95)',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "rgba(245, 245, 245, 0.95)",
+    alignItems: "center",
+    justifyContent: "center",
   },
   loadingText: {
     marginTop: 10,
     fontSize: 16,
-    color: '#333',
-    fontWeight: '500',
+    color: "#333",
+    fontWeight: "500",
   },
   errorContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   errorText: {
     fontSize: 18,
-    color: '#FF6B6B',
-    textAlign: 'center',
+    color: "#FF6B6B",
+    textAlign: "center",
     marginBottom: 10,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   retryText: {
     fontSize: 14,
-    color: '#888888',
-    textAlign: 'center',
+    color: "#888888",
+    textAlign: "center",
   },
 });
