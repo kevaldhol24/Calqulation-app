@@ -55,6 +55,11 @@ jobs:
         npm ci --prefer-offline --no-audit
         npx expo install --fix
 
+    - name: 🔧 Install EAS CLI globally
+      run: |
+        npm install -g @expo/eas-cli
+        eas --version
+
     - name: 🏗 Setup Gradle cache
       uses: actions/cache@v4
       with:
@@ -76,7 +81,7 @@ jobs:
       if: github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == ''
       run: |
         echo "Building APK with preview profile..."
-        npx eas build --platform android --profile preview --local --output ./build-output/app.apk --no-wait
+        eas build --platform android --profile preview --local --output ./build-output/app.apk --no-wait
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
@@ -84,7 +89,7 @@ jobs:
       if: github.event.inputs.build_type == 'aab'
       run: |
         echo "Building AAB with production profile..."
-        npx eas build --platform android --profile production --local --output ./build-output/app.aab --no-wait
+        eas build --platform android --profile production --local --output ./build-output/app.aab --no-wait
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
