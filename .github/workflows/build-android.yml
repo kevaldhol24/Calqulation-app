@@ -4,8 +4,21 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [     - name: 📦 Upload APK artifact
+      if: (github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == '') && hashFiles('./build-output/app.apk') != ''
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-apk-${{ github.sha }}
+        path: ./build-output/app.apk
+        retention-days: 30
+
+    - name: 📦 Upload AAB artifact
+      if: github.event.inputs.build_type == 'aab' && hashFiles('./build-output/app.aab') != ''
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-aab-${{ github.sha }}
+        path: ./build-output/app.aab
+        retention-days: 30ow_dispatch:
     inputs:
       build_type:
         description: 'Build type (apk or aab)'
@@ -70,22 +83,36 @@ jobs:
         echo "EXPO_NO_TELEMETRY=1" >> $GITHUB_ENV
         echo "EXPO_NO_GIT_STATUS=1" >> $GITHUB_ENV
         echo "EAS_NO_VCS=1" >> $GITHUB_ENV
+        mkdir -p ./build-output
 
     - name: 🚀 Build APK
       if: github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == ''
       run: |
-        npx eas build --platform android --profile preview --local --output ./build-output/app.apk
+        echo "Building APK with preview profile..."
+        npx eas build --platform android --profile preview --local --output ./build-output/app.apk --no-wait
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
     - name: 🚀 Build AAB
       if: github.event.inputs.build_type == 'aab'
       run: |
-        npx eas build --platform android --profile production --local --output ./build-output/app.aab
+        echo "Building AAB with production profile..."
+        npx eas build --platform android --profile production --local --output ./build-output/app.aab --no-wait
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-    - name: 📦 Upload APK artifact
+    - name: � Verify build output
+      run: |
+        echo "Checking build output directory..."
+        ls -la ./build-output/ || echo "Build output directory not found"
+        if [ -f "./build-output/app.apk" ]; then
+          echo "✅ APK build found: $(ls -lh ./build-output/app.apk)"
+        fi
+        if [ -f "./build-output/app.aab" ]; then
+          echo "✅ AAB build found: $(ls -lh ./build-output/app.aab)"
+        fi
+
+    - name: �📦 Upload APK artifact
       if: github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == ''
       uses: actions/upload-artifact@v4
       with:
