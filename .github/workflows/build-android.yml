@@ -81,17 +81,19 @@ jobs:
       if: github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == ''
       run: |
         echo "Building APK with preview profile..."
-        npx eas-cli build --platform android --profile preview --local --output ./build-output/app.apk --no-wait
+        npx eas-cli build --platform android --profile preview --local --output ./build-output/app.apk --non-interactive
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        EAS_NO_VCS: 1
 
     - name: 🚀 Build AAB
       if: github.event.inputs.build_type == 'aab'
       run: |
         echo "Building AAB with production profile..."
-        npx eas-cli build --platform android --profile production --local --output ./build-output/app.aab --no-wait
+        npx eas-cli build --platform android --profile production --local --output ./build-output/app.aab --non-interactive
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        EAS_NO_VCS: 1
 
     - name: � Verify build output
       run: |

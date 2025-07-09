@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 7.8.0"
+    "version": ">= 7.8.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -19,8 +20,7 @@
       },
       "env": {
         "NODE_ENV": "production"
-      },
-      "channel": "preview"
+      }
     },
     "production": {
       "android": {
@@ -29,8 +29,7 @@
       },
       "env": {
         "NODE_ENV": "production"
-      },
-      "channel": "production"
+      }
     }
   },
   "submit": {
