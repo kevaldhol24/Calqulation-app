@@ -1,12 +1,37 @@
-import React from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Switch } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Switch, Linking, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from '../context/ThemeContext';
 
 export default function SettingsScreen() {
+  const theme = useTheme();
+  const [refreshing, setRefreshing] = useState(false);
   const [notifications, setNotifications] = React.useState(true);
   const [darkMode, setDarkMode] = React.useState(false);
   const [autoRefresh, setAutoRefresh] = React.useState(true);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // Simulate refresh action
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
+  const openURL = async (url: string) => {
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        console.log("Don't know how to open URI: " + url);
+      }
+    } catch (error) {
+      console.error('An error occurred', error);
+    }
+  };
 
   const settingsOptions = [
     {
@@ -17,15 +42,6 @@ export default function SettingsScreen() {
       type: 'switch',
       value: notifications,
       onValueChange: setNotifications,
-    },
-    {
-      id: 'darkMode',
-      title: 'Dark Mode',
-      description: 'Use dark theme for the app',
-      icon: 'moon',
-      type: 'switch',
-      value: darkMode,
-      onValueChange: setDarkMode,
     },
     {
       id: 'autoRefresh',
@@ -41,38 +57,45 @@ export default function SettingsScreen() {
   const actionOptions = [
     {
       id: 'about',
-      title: 'About',
-      description: 'App version and information',
+      title: 'About Us',
+      description: 'Learn more about Calqulation',
       icon: 'information-circle',
-      onPress: () => console.log('About pressed'),
+      onPress: () => openURL('https://www.calqulation.com/about-us'),
     },
     {
       id: 'help',
       title: 'Help & Support',
       description: 'Get help and contact support',
       icon: 'help-circle',
-      onPress: () => console.log('Help pressed'),
+      onPress: () => openURL('https://www.calqulation.com/contact'),
     },
     {
       id: 'privacy',
       title: 'Privacy Policy',
       description: 'Read our privacy policy',
       icon: 'shield-checkmark',
-      onPress: () => console.log('Privacy pressed'),
+      onPress: () => openURL('https://www.calqulation.com/privacy-policy'),
     },
     {
       id: 'terms',
       title: 'Terms of Service',
       description: 'Read terms and conditions',
       icon: 'document-text',
-      onPress: () => console.log('Terms pressed'),
+      onPress: () => openURL('https://www.calqulation.com/terms-of-service'),
+    },
+    {
+      id: 'disclaimer',
+      title: 'Disclaimer',
+      description: 'Important disclaimer information',
+      icon: 'warning',
+      onPress: () => openURL('https://www.calqulation.com/disclaimer'),
     },
     {
       id: 'feedback',
       title: 'Send Feedback',
       description: 'Help us improve the app',
       icon: 'chatbubble',
-      onPress: () => console.log('Feedback pressed'),
+      onPress: () => openURL('https://www.calqulation.com/contact'),
     },
   ];
 
@@ -80,7 +103,7 @@ export default function SettingsScreen() {
     <View key={item.id} style={styles.settingItem}>
       <View style={styles.settingLeft}>
         <View style={styles.iconContainer}>
-          <Ionicons name={item.icon} size={20} color="#6a4c93" />
+          <Ionicons name={item.icon} size={20} color={theme.colors.primary} />
         </View>
         <View style={styles.settingInfo}>
           <Text style={styles.settingTitle}>{item.title}</Text>
@@ -91,7 +114,7 @@ export default function SettingsScreen() {
         <Switch
           value={item.value}
           onValueChange={item.onValueChange}
-          trackColor={{ false: '#767577', true: '#6a4c93' }}
+          trackColor={{ false: '#767577', true: theme.colors.primary }}
           thumbColor={item.value ? '#ffffff' : '#f4f3f4'}
         />
       ) : null}
@@ -107,7 +130,7 @@ export default function SettingsScreen() {
     >
       <View style={styles.settingLeft}>
         <View style={styles.iconContainer}>
-          <Ionicons name={item.icon} size={20} color="#6a4c93" />
+          <Ionicons name={item.icon} size={20} color={theme.colors.primary} />
         </View>
         <View style={styles.settingInfo}>
           <Text style={styles.settingTitle}>{item.title}</Text>
@@ -120,12 +143,26 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      <LinearGradient
+        colors={[theme.colors.primary, theme.colors.secondary]}
+        style={styles.header}
+      >
         <Text style={styles.headerTitle}>Settings</Text>
         <Text style={styles.headerSubtitle}>Customize your app experience</Text>
-      </View>
+      </LinearGradient>
       
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.content} 
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.colors.primary]}
+            tintColor={theme.colors.primary}
+          />
+        }
+      >
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preferences</Text>
           <View style={styles.sectionContent}>
@@ -158,7 +195,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   header: {
-    backgroundColor: '#6a4c93',
     paddingHorizontal: 20,
     paddingVertical: 20,
     borderBottomLeftRadius: 20,
@@ -223,7 +259,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#6a4c9320',
+    backgroundColor: '#6e11b020',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -250,7 +286,7 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#6a4c93',
+    color: '#6e11b0',
     marginBottom: 4,
   },
   appVersion: {

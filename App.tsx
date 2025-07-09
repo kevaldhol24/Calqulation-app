@@ -3,7 +3,9 @@ import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import AppNavigator from './navigation/AppNavigator';
+import { ThemeProvider, theme } from './context/ThemeContext';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -41,23 +43,30 @@ export default function App() {
 
   if (!appIsReady) {
     return (
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.splashContainer}>
-          <StatusBar style="light" />
-          <Text style={styles.splashText}>Calqulation</Text>
-          <ActivityIndicator size="large" color="#6a4c93" style={styles.splashLoader} />
-        </SafeAreaView>
-      </SafeAreaProvider>
+      <ThemeProvider>
+        <SafeAreaProvider>
+          <LinearGradient
+            colors={[theme.colors.primary, theme.colors.secondary]}
+            style={styles.splashContainer}
+          >
+            <StatusBar style="light" />
+            <Text style={styles.splashText}>Calqulation</Text>
+            <ActivityIndicator size="large" color="#ffffff" style={styles.splashLoader} />
+          </LinearGradient>
+        </SafeAreaProvider>
+      </ThemeProvider>
     );
   }
 
   return (
-    <SafeAreaProvider>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <StatusBar style="auto" />
-        <AppNavigator />
-      </View>
-    </SafeAreaProvider>
+    <ThemeProvider>
+      <SafeAreaProvider>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          <StatusBar style="auto" />
+          <AppNavigator />
+        </View>
+      </SafeAreaProvider>
+    </ThemeProvider>
   );
 }
 
@@ -67,7 +76,6 @@ const styles = StyleSheet.create({
   },
   splashContainer: {
     flex: 1,
-    backgroundColor: '#6a4c93',
     alignItems: 'center',
     justifyContent: 'center',
   },

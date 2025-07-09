@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-const EMI_CALCULATOR_URL = 'https://www.calqulation.com/tool/emi-calculator';
+import { useTheme } from '../context/ThemeContext';
+import { WEBVIEW_HEADERS, WEBVIEW_URLS, WEBVIEW_CONFIG } from '../constants/webview';
 
 export default function EMICalculatorScreen() {
+  const theme = useTheme();
+  const webViewRef = useRef<WebView>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -28,20 +30,19 @@ export default function EMICalculatorScreen() {
       ) : (
         <>
           <WebView
-            source={{ uri: EMI_CALCULATOR_URL }}
+            ref={webViewRef}
+            source={{ 
+              uri: WEBVIEW_URLS.EMI_CALCULATOR,
+              headers: WEBVIEW_HEADERS
+            }}
             style={styles.webview}
             onLoad={handleWebViewLoad}
             onError={handleWebViewError}
             onHttpError={handleWebViewError}
-            startInLoadingState={true}
-            scalesPageToFit={true}
-            bounces={false}
-            javaScriptEnabled={true}
-            domStorageEnabled={true}
-            allowsBackForwardNavigationGestures={true}
+            {...WEBVIEW_CONFIG}
             renderLoading={() => (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#2196F3" />
+                <ActivityIndicator size="large" color={theme.colors.info} />
                 <Text style={styles.loadingText}>Loading EMI Calculator...</Text>
               </View>
             )}
@@ -49,7 +50,7 @@ export default function EMICalculatorScreen() {
           
           {isLoading && (
             <View style={styles.loadingOverlay}>
-              <ActivityIndicator size="large" color="#2196F3" />
+              <ActivityIndicator size="large" color={theme.colors.info} />
               <Text style={styles.loadingText}>Loading EMI Calculator...</Text>
             </View>
           )}

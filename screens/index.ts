@@ -1,5 +1,21 @@
-export { default as HomeScreen } from './HomeScreen';
-export { default as SIPCalculatorScreen } from './SIPCalculatorScreen';
-export { default as EMICalculatorScreen } from './EMICalculatorScreen';
-export { default as BlogScreen } from './BlogScreen';
-export { default as SettingsScreen } from './SettingsScreen';
+import HomeScreen from './HomeScreen';
+import SIPCalculatorScreen from './SIPCalculatorScreen';
+import EMICalculatorScreen from './EMICalculatorScreen';
+import BlogScreen from './BlogScreen';
+import SettingsScreen from './SettingsScreen';
+
+export {
+  HomeScreen,
+  SIPCalculatorScreen,
+  EMICalculatorScreen,
+  BlogScreen,
+  SettingsScreen,
+};
+
+export default {
+  HomeScreen,
+  SIPCalculatorScreen,
+  EMICalculatorScreen,
+  BlogScreen,
+  SettingsScreen,
+};

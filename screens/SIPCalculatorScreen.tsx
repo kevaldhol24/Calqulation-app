@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-const SIP_CALCULATOR_URL = 'https://www.calqulation.com/tool/sip-calculator';
+import { useTheme } from '../context/ThemeContext';
+import { WEBVIEW_HEADERS, WEBVIEW_URLS, WEBVIEW_CONFIG } from '../constants/webview';
 
 export default function SIPCalculatorScreen() {
+  const theme = useTheme();
+  const webViewRef = useRef<WebView>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -28,20 +30,19 @@ export default function SIPCalculatorScreen() {
       ) : (
         <>
           <WebView
-            source={{ uri: SIP_CALCULATOR_URL }}
+            ref={webViewRef}
+            source={{ 
+              uri: WEBVIEW_URLS.SIP_CALCULATOR,
+              headers: WEBVIEW_HEADERS
+            }}
             style={styles.webview}
             onLoad={handleWebViewLoad}
             onError={handleWebViewError}
             onHttpError={handleWebViewError}
-            startInLoadingState={true}
-            scalesPageToFit={true}
-            bounces={false}
-            javaScriptEnabled={true}
-            domStorageEnabled={true}
-            allowsBackForwardNavigationGestures={true}
+            {...WEBVIEW_CONFIG}
             renderLoading={() => (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#4CAF50" />
+                <ActivityIndicator size="large" color={theme.colors.success} />
                 <Text style={styles.loadingText}>Loading SIP Calculator...</Text>
               </View>
             )}
@@ -49,7 +50,7 @@ export default function SIPCalculatorScreen() {
           
           {isLoading && (
             <View style={styles.loadingOverlay}>
-              <ActivityIndicator size="large" color="#4CAF50" />
+              <ActivityIndicator size="large" color={theme.colors.success} />
               <Text style={styles.loadingText}>Loading SIP Calculator...</Text>
             </View>
           )}

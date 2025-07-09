@@ -37,7 +37,7 @@ export default function AppNavigator() {
 
             return <Ionicons name={iconName as any} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#6a4c93',
+          tabBarActiveTintColor: '#6e11b0',
           tabBarInactiveTintColor: '#888',
           tabBarStyle: {
             backgroundColor: '#ffffff',
@@ -45,7 +45,7 @@ export default function AppNavigator() {
             borderTopColor: '#e0e0e0',
             paddingBottom: 8,
             paddingTop: 8,
-            height: 65,
+            height: 80,
           },
           tabBarLabelStyle: {
             fontSize: 12,
