@@ -6,7 +6,8 @@ A React Native (Expo) mobile application that provides easy access to financial 
 
 - 🏠 **Custom Home Screen** with tool overview and branding
 - 📊 **SIP Calculator** - Calculate your SIP investments and returns
-- 💰 **EMI Calculator** - Calculate loan EMI and total interest
+- 💰 **Advanced EMI Tool** - Calculate loan EMI and total interest
+- 📱 **Offline EMI Calculator** - Basic EMI calculation without internet
 - 📚 **Financial Blog** - Access to latest financial insights
 - ⚙️ **Settings Screen** - App preferences and information
 - � **Multi-Currency Support** - Support for 8 popular currencies (INR, USD, EUR, GBP, JPY, CAD, AUD, KRW)
@@ -27,6 +28,7 @@ A React Native (Expo) mobile application that provides easy access to financial 
   - **Loan Comparison**: WebView loading https://www.calqulation.com/tool/loan-comparison
   - **Personal Loan Calculator**: WebView loading https://www.calqulation.com/tool/personal-loan-calculator
   - **Car Loan Calculator**: WebView loading https://www.calqulation.com/tool/car-loan-calculator
+  - **Offline EMI Calculator**: Native calculator that works offline
 - **SIP Calculator**: WebView loading https://www.calqulation.com/tool/sip-calculator
 - **EMI Calculator**: WebView loading https://www.calqulation.com/tool/emi-calculator
 - **Blog**: WebView loading https://www.calqulation.com/blog

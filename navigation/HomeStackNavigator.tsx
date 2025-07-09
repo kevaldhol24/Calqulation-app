@@ -4,6 +4,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LoanComparisonScreen from '../screens/LoanComparisonScreen';
 import PersonalLoanCalculatorScreen from '../screens/PersonalLoanCalculatorScreen';
 import CarLoanCalculatorScreen from '../screens/CarLoanCalculatorScreen';
+import OfflineEMICalculatorScreen from '../screens/OfflineEMICalculatorScreen';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,10 @@ export default function HomeStackNavigator() {
       <Stack.Screen 
         name="CarLoanCalculator" 
         component={CarLoanCalculatorScreen} 
+      />
+      <Stack.Screen 
+        name="OfflineEMICalculator" 
+        component={OfflineEMICalculatorScreen} 
       />
     </Stack.Navigator>
   );

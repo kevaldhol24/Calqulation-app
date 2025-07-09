@@ -1,6 +1,7 @@
 import HomeScreen from './HomeScreen';
 import SIPCalculatorScreen from './SIPCalculatorScreen';
 import EMICalculatorScreen from './EMICalculatorScreen';
+import OfflineEMICalculatorScreen from './OfflineEMICalculatorScreen';
 import BlogScreen from './BlogScreen';
 import SettingsScreen from './SettingsScreen';
 import LoanComparisonScreen from './LoanComparisonScreen';
@@ -11,6 +12,7 @@ export {
   HomeScreen,
   SIPCalculatorScreen,
   EMICalculatorScreen,
+  OfflineEMICalculatorScreen,
   BlogScreen,
   SettingsScreen,
   LoanComparisonScreen,
