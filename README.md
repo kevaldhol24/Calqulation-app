@@ -1,16 +1,38 @@
 # Calqulation Mobile App
 
-A React Native (Expo) mobile application that wraps the Calqulation website in a WebView for Android and iOS devices.
+A React Native (Expo) mobile application that provides easy access to financial calculation tools with a native mobile experience.
 
-## Features
+## 🚀 Features
 
-- 🌐 **Full-screen WebView** loading https://www.calqulation.com
+- 🏠 **Custom Home Screen** with tool overview and branding
+- 📊 **SIP Calculator** - Calculate your SIP investments and returns
+- 💰 **EMI Calculator** - Calculate loan EMI and total interest
+- 📚 **Financial Blog** - Access to latest financial insights
+- ⚙️ **Settings Screen** - App preferences and information
+- 📱 **Bottom Tab Navigation** - Easy navigation between sections
+- 🌐 **WebView Integration** - Seamless integration with Calqulation website
 - ⚡ **Splash Screen** with app branding
-- 🔄 **Loading Indicators** while content loads
-- 📱 **Responsive Design** for mobile devices
-- 🛜 **Internet Permissions** properly configured
-- 🎨 **Clean UI** with error handling
-- 🔧 **Production Ready** code structure
+- 🔄 **Loading States** for all screens
+- 📱 **Responsive Design** for different screen sizes
+- 🎨 **Modern UI** with consistent design language
+- 🛜 **Offline Error Handling** with user-friendly messages
+
+## 📱 App Structure
+
+### Navigation
+- **Home**: Custom native home screen showcasing financial tools
+- **SIP Calculator**: WebView loading https://www.calqulation.com/tool/sip-calculator
+- **EMI Calculator**: WebView loading https://www.calqulation.com/tool/emi-calculator
+- **Blog**: WebView loading https://www.calqulation.com/blog
+- **Settings**: Native settings screen for app preferences
+
+### Key Technologies
+- React Native with Expo SDK 53
+- TypeScript for type safety
+- React Navigation 6 for bottom tabs
+- react-native-webview for web content
+- Expo Vector Icons for consistent iconography
+- React Native Safe Area Context for proper screen handling
 
 ## Prerequisites
 
@@ -24,8 +46,8 @@ A React Native (Expo) mobile application that wraps the Calqulation website in a
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd calqulation
+   git clone https://github.com/yourusername/calqulation-app.git
+   cd calqulation-app
    ```
 
 2. **Install dependencies:**
@@ -48,6 +70,32 @@ A React Native (Expo) mobile application that wraps the Calqulation website in a
 npx expo start
 
 # Run on Android device/emulator
+npx expo start --android
+
+# Run on iOS device/simulator (macOS only)
+npx expo start --ios
+
+# Run on web browser
+npx expo start --web
+```
+
+### Project Structure
+```
+calqulation-app/
+├── screens/              # App screens
+│   ├── HomeScreen.tsx    # Custom home screen
+│   ├── SIPCalculatorScreen.tsx
+│   ├── EMICalculatorScreen.tsx
+│   ├── BlogScreen.tsx
+│   ├── SettingsScreen.tsx
+│   └── index.ts          # Screen exports
+├── navigation/           # Navigation configuration
+│   └── AppNavigator.tsx  # Bottom tab navigator
+├── assets/              # Images and icons
+├── App.tsx              # Main app component
+├── app.json             # Expo configuration
+└── package.json         # Dependencies and scripts
+```
 npx expo run:android
 
 # Run on iOS device/simulator (macOS only)
