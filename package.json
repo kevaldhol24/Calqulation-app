@@ -11,7 +11,7 @@
     "build:android:aab": "eas build --platform android --profile production",
     "build:android:local": "eas build --platform android --profile preview --local",
     "analyze:bundle": "npx expo export --dump-assetmap",
-    "clean": "expo r -c && npm cache clean --force",
+    "clean": "rm -rf node_modules/.cache && rm -rf .expo && npm cache clean --force",
     "prebuild": "expo prebuild --clean",
     "type-check": "tsc --noEmit"
   },

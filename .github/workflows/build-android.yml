@@ -55,14 +55,6 @@ jobs:
         npm ci --prefer-offline --no-audit
         npx expo install --fix
 
-    - name: 🧹 Clean cache
-      run: |
-        npm cache clean --force
-        npx expo r -c
-
-    - name: 🔧 Generate app config
-      run: npx expo export:embed
-
     - name: 🏗 Setup Gradle cache
       uses: actions/cache@v4
       with:
