@@ -9,7 +9,7 @@ import { useWebViewBackNavigation } from '../hooks';
 import { WebViewCookieInjector } from '../utils/webViewCookies';
 import { createCurrencyCookieScript } from '../utils/currencyManager';
 
-export default function BlogScreen() {
+export default function LoanComparisonScreen() {
   const theme = useTheme();
   const currency = useCurrency();
   const webViewRef = useRef<WebView>(null);
@@ -43,7 +43,7 @@ export default function BlogScreen() {
 
   const handleWebViewError = () => {
     setIsLoading(false);
-    setError('Failed to load blog. Please check your internet connection.');
+    setError('Failed to load Loan Comparison. Please check your internet connection.');
   };
 
   const handleRefresh = () => {
@@ -55,8 +55,8 @@ export default function BlogScreen() {
   return (
     <View style={styles.container}>
       <ToolHeader 
-        title="Financial Blog" 
-        icon="library" 
+        title="Loan Comparison" 
+        icon="swap-horizontal" 
         onRefresh={handleRefresh}
       />
       {error ? (
@@ -69,7 +69,7 @@ export default function BlogScreen() {
           <WebView
             ref={webViewRef}
             source={{ 
-              uri: WEBVIEW_URLS.BLOG,
+              uri: WEBVIEW_URLS.LOAN_COMPARISON,
               headers: WEBVIEW_HEADERS
             }}
             style={styles.webview}
@@ -80,16 +80,16 @@ export default function BlogScreen() {
             {...WEBVIEW_CONFIG}
             renderLoading={() => (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={theme.colors.warning} />
-                <Text style={styles.loadingText}>Loading Blog...</Text>
+                <ActivityIndicator size="large" color={theme.colors.success} />
+                <Text style={styles.loadingText}>Loading Loan Comparison...</Text>
               </View>
             )}
           />
           
           {isLoading && (
             <View style={styles.loadingOverlay}>
-              <ActivityIndicator size="large" color={theme.colors.warning} />
-              <Text style={styles.loadingText}>Loading Blog...</Text>
+              <ActivityIndicator size="large" color={theme.colors.success} />
+              <Text style={styles.loadingText}>Loading Loan Comparison...</Text>
             </View>
           )}
         </>

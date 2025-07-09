@@ -3,8 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
+import HomeStackNavigator from './HomeStackNavigator';
 import {
-  HomeScreen,
   SIPCalculatorScreen,
   EMICalculatorScreen,
   BlogScreen,
@@ -57,7 +57,7 @@ export default function AppNavigator() {
       >
         <Tab.Screen 
           name="Home" 
-          component={HomeScreen}
+          component={HomeStackNavigator}
           options={{
             tabBarLabel: 'Home',
           }}

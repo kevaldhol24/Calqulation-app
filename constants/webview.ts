@@ -23,6 +23,9 @@ export const WEBVIEW_BASE_URL = 'https://www.calqulation.com';
 export const WEBVIEW_URLS = {
   SIP_CALCULATOR: `${WEBVIEW_BASE_URL}/tool/sip-calculator`,
   EMI_CALCULATOR: `${WEBVIEW_BASE_URL}/tool/emi-calculator`,
+  LOAN_COMPARISON: `${WEBVIEW_BASE_URL}/tool/loan-comparison`,
+  PERSONAL_LOAN_CALCULATOR: `${WEBVIEW_BASE_URL}/tool/personal-loan-calculator`,
+  CAR_LOAN_CALCULATOR: `${WEBVIEW_BASE_URL}/tool/car-loan-calculator`,
   BLOG: `${WEBVIEW_BASE_URL}/blog`,
   HOME: `${WEBVIEW_BASE_URL}`
 };

@@ -9,6 +9,7 @@ import {
   Linking,
   RefreshControl,
   StatusBar,
+  Alert,
 } from "react-native";
 import {
   SafeAreaView,
@@ -17,9 +18,19 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../context/ThemeContext";
+import { useCurrency } from "../context/CurrencyContext";
+import { CurrencyPicker } from "../components/CurrencyPicker";
+import { 
+  CurrencyOption, 
+  getDefaultCurrency, 
+  createCurrencyCookieScript,
+  currencyUtils 
+} from "../utils/currencyManager";
+import { WebViewCookieInjector } from "../utils/webViewCookies";
 
 export default function SettingsScreen() {
   const theme = useTheme();
+  const currency = useCurrency();
   const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
   const [notifications, setNotifications] = React.useState(true);
@@ -47,7 +58,42 @@ export default function SettingsScreen() {
     }
   };
 
+  const handleCurrencyChange = async (selectedCurrency: CurrencyOption) => {
+    try {
+      await currency.setCurrency(selectedCurrency);
+      
+      // Show success message with more detailed info
+      Alert.alert(
+        'Currency Updated Successfully! 🎉',
+        `Your currency preference has been set to ${selectedCurrency.currency} (${selectedCurrency.symbol}). 
+
+✅ All calculator tools will now use ${selectedCurrency.currency}
+✅ Your preference has been saved and will persist between app sessions
+✅ Open WebViews have been updated automatically
+
+Note: If you don't see the change immediately, try refreshing the calculator page.`,
+        [{ text: 'Got it!' }]
+      );
+    } catch (error) {
+      console.error('Error updating currency:', error);
+      Alert.alert(
+        'Update Failed',
+        'Failed to update currency preference. Please check your connection and try again.',
+        [{ text: 'OK' }]
+      );
+    }
+  };
+
   const settingsOptions = [
+    {
+      id: "currency",
+      title: "Currency",
+      description: `Currently set to ${currency.selectedCurrency.currency}`,
+      icon: "card",
+      type: "currency",
+      value: currency.selectedCurrency,
+      onValueChange: handleCurrencyChange,
+    },
     {
       id: "notifications",
       title: "Push Notifications",
@@ -114,7 +160,10 @@ export default function SettingsScreen() {
   ];
 
   const renderSettingItem = (item: any) => (
-    <View key={item.id} style={styles.settingItem}>
+    <View key={item.id} style={[
+      styles.settingItem,
+      item.type === "currency" && styles.currencySettingItem
+    ]}>
       <View style={styles.settingLeft}>
         <View style={styles.iconContainer}>
           <Ionicons name={item.icon} size={20} color={theme.colors.primary} />
@@ -131,6 +180,14 @@ export default function SettingsScreen() {
           trackColor={{ false: "#767577", true: theme.colors.primary }}
           thumbColor={item.value ? "#ffffff" : "#f4f3f4"}
         />
+      ) : item.type === "currency" ? (
+        <View style={styles.currencyPickerContainer}>
+          <CurrencyPicker
+            selectedCurrency={item.value}
+            onCurrencyChange={item.onValueChange}
+            isLoading={currency.isLoading}
+          />
+        </View>
       ) : null}
     </View>
   );
@@ -300,6 +357,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
   },
+  currencySettingItem: {
+    flexDirection: "column",
+    alignItems: "stretch",
+    paddingBottom: 20,
+  },
   actionItem: {
     flexDirection: "row",
     alignItems: "center",
@@ -335,6 +397,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     lineHeight: 18,
+  },
+  currencyPickerContainer: {
+    marginTop: 12,
   },
   appInfo: {
     alignItems: "center",

@@ -3,6 +3,9 @@ import SIPCalculatorScreen from './SIPCalculatorScreen';
 import EMICalculatorScreen from './EMICalculatorScreen';
 import BlogScreen from './BlogScreen';
 import SettingsScreen from './SettingsScreen';
+import LoanComparisonScreen from './LoanComparisonScreen';
+import PersonalLoanCalculatorScreen from './PersonalLoanCalculatorScreen';
+import CarLoanCalculatorScreen from './CarLoanCalculatorScreen';
 
 export {
   HomeScreen,
@@ -10,6 +13,9 @@ export {
   EMICalculatorScreen,
   BlogScreen,
   SettingsScreen,
+  LoanComparisonScreen,
+  PersonalLoanCalculatorScreen,
+  CarLoanCalculatorScreen,
 };
 
 export default {
@@ -18,4 +24,7 @@ export default {
   EMICalculatorScreen,
   BlogScreen,
   SettingsScreen,
+  LoanComparisonScreen,
+  PersonalLoanCalculatorScreen,
+  CarLoanCalculatorScreen,
 };

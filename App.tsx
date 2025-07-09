@@ -6,6 +6,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppNavigator from './navigation/AppNavigator';
 import { ThemeProvider, theme } from './context/ThemeContext';
+import { CurrencyProvider } from './context/CurrencyContext';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -60,12 +61,14 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <SafeAreaProvider>
-        <View style={styles.container} onLayout={onLayoutRootView}>
-          <StatusBar style="light" />
-          <AppNavigator />
-        </View>
-      </SafeAreaProvider>
+      <CurrencyProvider>
+        <SafeAreaProvider>
+          <View style={styles.container} onLayout={onLayoutRootView}>
+            <StatusBar style="light" />
+            <AppNavigator />
+          </View>
+        </SafeAreaProvider>
+      </CurrencyProvider>
     </ThemeProvider>
   );
 }

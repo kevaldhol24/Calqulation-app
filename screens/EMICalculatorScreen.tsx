@@ -1,21 +1,44 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useTheme } from '../context/ThemeContext';
+import { useCurrency } from '../context/CurrencyContext';
 import { WEBVIEW_HEADERS, WEBVIEW_URLS, WEBVIEW_CONFIG } from '../constants/webview';
 import { ToolHeader } from '../components/ToolHeader';
 import { useWebViewBackNavigation } from '../hooks';
+import { WebViewCookieInjector } from '../utils/webViewCookies';
+import { createCurrencyCookieScript } from '../utils/currencyManager';
 
 export default function EMICalculatorScreen() {
   const theme = useTheme();
+  const currency = useCurrency();
   const webViewRef = useRef<WebView>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   
   const { handleNavigationStateChange } = useWebViewBackNavigation(webViewRef);
 
+  // Register WebView with cookie injector
+  useEffect(() => {
+    if (webViewRef.current) {
+      WebViewCookieInjector.registerWebView(webViewRef.current);
+    }
+    
+    return () => {
+      if (webViewRef.current) {
+        WebViewCookieInjector.unregisterWebView(webViewRef.current);
+      }
+    };
+  }, []);
+
   const handleWebViewLoad = () => {
     setIsLoading(false);
+    
+    // Inject current currency cookie on load
+    if (webViewRef.current && !currency.isLoading) {
+      const cookieScript = createCurrencyCookieScript(currency.selectedCurrency);
+      webViewRef.current.injectJavaScript(cookieScript);
+    }
   };
 
   const handleWebViewError = () => {

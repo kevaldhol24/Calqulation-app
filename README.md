@@ -9,18 +9,24 @@ A React Native (Expo) mobile application that provides easy access to financial 
 - 💰 **EMI Calculator** - Calculate loan EMI and total interest
 - 📚 **Financial Blog** - Access to latest financial insights
 - ⚙️ **Settings Screen** - App preferences and information
-- 📱 **Bottom Tab Navigation** - Easy navigation between sections
+- � **Multi-Currency Support** - Support for 8 popular currencies (INR, USD, EUR, GBP, JPY, CAD, AUD, KRW)
+- 💾 **Persistent Currency Preference** - Your currency choice is saved and persists across app sessions
+- 🔄 **Live Currency Updates** - Currency changes are applied to all open WebViews immediately
+- �📱 **Bottom Tab Navigation** - Easy navigation between sections
 - 🌐 **WebView Integration** - Seamless integration with Calqulation website
 - ⚡ **Splash Screen** with app branding
 - 🔄 **Loading States** for all screens
 - 📱 **Responsive Design** for different screen sizes
-- 🎨 **Modern UI** with consistent design language
+- 🎨 **Modern UI** with consistent design language and centralized theming
 - 🛜 **Offline Error Handling** with user-friendly messages
 
 ## 📱 App Structure
 
 ### Navigation
 - **Home**: Custom native home screen showcasing financial tools
+  - **Loan Comparison**: WebView loading https://www.calqulation.com/tool/loan-comparison
+  - **Personal Loan Calculator**: WebView loading https://www.calqulation.com/tool/personal-loan-calculator
+  - **Car Loan Calculator**: WebView loading https://www.calqulation.com/tool/car-loan-calculator
 - **SIP Calculator**: WebView loading https://www.calqulation.com/tool/sip-calculator
 - **EMI Calculator**: WebView loading https://www.calqulation.com/tool/emi-calculator
 - **Blog**: WebView loading https://www.calqulation.com/blog
@@ -29,10 +35,11 @@ A React Native (Expo) mobile application that provides easy access to financial 
 ### Key Technologies
 - React Native with Expo SDK 53
 - TypeScript for type safety
-- React Navigation 6 for bottom tabs
+- React Navigation 6 for bottom tabs and stack navigation
 - react-native-webview for web content
 - Expo Vector Icons for consistent iconography
 - React Native Safe Area Context for proper screen handling
+- AsyncStorage for persistent currency preferences
 
 ## Prerequisites
 
