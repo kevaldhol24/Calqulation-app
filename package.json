@@ -4,15 +4,15 @@
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "prebuild": "expo prebuild --clean",
     "prebuild:android": "expo prebuild --platform android --clean",
-    "build:apk": "cd android && ./gradlew assembleRelease",
-    "build:aab": "cd android && ./gradlew bundleRelease",
-    "clean": "rm -rf node_modules/.cache && rm -rf .expo && npm cache clean --force",
-    "clean:android": "cd android && ./gradlew clean"
+    "build:apk": "cd android && gradlew.bat assembleRelease",
+    "build:aab": "cd android && gradlew.bat bundleRelease",
+    "clean": "rmdir /s /q node_modules\\.cache && rmdir /s /q .expo && npm cache clean --force",
+    "clean:android": "cd android && gradlew.bat clean"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
