@@ -20,7 +20,7 @@ import { useCurrency } from "../context/CurrencyContext";
 import { ToolHeader } from "../components/ToolHeader";
 
 export default function OfflineEMICalculatorScreen() {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const { selectedCurrency } = useCurrency();
   const symbol = selectedCurrency.symbol;
 

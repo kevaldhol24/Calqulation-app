@@ -19,23 +19,25 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../context/ThemeContext";
 import { useCurrency } from "../context/CurrencyContext";
-import { CurrencyPicker } from "../components/CurrencyPicker";
+import { CurrencyPicker, ThemePicker, ThemedAlert } from "../components";
 import {
   CurrencyOption,
   getDefaultCurrency,
   createCurrencyCookieScript,
   currencyUtils,
 } from "../utils/currencyManager";
+import { ThemeOption } from "../utils/themeManager";
 import { WebViewCookieInjector } from "../utils/webViewCookies";
 
 export default function SettingsScreen() {
-  const theme = useTheme();
+  const { theme, selectedThemeOption, setTheme } = useTheme();
   const currency = useCurrency();
   const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
   const [notifications, setNotifications] = React.useState(true);
-  const [darkMode, setDarkMode] = React.useState(false);
   const [autoRefresh, setAutoRefresh] = React.useState(true);
+  const [currencyAlert, setCurrencyAlert] = useState({ visible: false, message: "" });
+  const [themeAlert, setThemeAlert] = useState({ visible: false, message: "" });
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -63,28 +65,59 @@ export default function SettingsScreen() {
       await currency.setCurrency(selectedCurrency);
 
       // Show success message with more detailed info
-      Alert.alert(
-        "Currency Updated Successfully! 🎉",
-        `Your currency preference has been set to ${selectedCurrency.currency} (${selectedCurrency.symbol}). 
+      setCurrencyAlert({
+        visible: true,
+        message: `Your currency preference has been set to ${selectedCurrency.currency} (${selectedCurrency.symbol}). 
 
 ✅ All calculator tools will now use ${selectedCurrency.currency}
 ✅ Your preference has been saved and will persist between app sessions
 ✅ Open WebViews have been updated automatically
 
-Note: If you don't see the change immediately, try refreshing the calculator page.`,
-        [{ text: "Got it!" }]
-      );
+Note: If you don't see the change immediately, try refreshing the calculator page.`
+      });
     } catch (error) {
       console.error("Error updating currency:", error);
-      Alert.alert(
-        "Update Failed",
-        "Failed to update currency preference. Please check your connection and try again.",
-        [{ text: "OK" }]
-      );
+      setCurrencyAlert({
+        visible: true,
+        message: "Failed to update currency preference. Please check your connection and try again."
+      });
+    }
+  };
+
+  const handleThemeChange = async (selectedTheme: ThemeOption) => {
+    try {
+      await setTheme(selectedTheme);
+
+      // Show success message
+      setThemeAlert({
+        visible: true,
+        message: `Your theme preference has been set to ${selectedTheme.label}. 
+
+✅ The app theme has been updated
+✅ Your preference has been saved and will persist between app sessions
+✅ Open WebViews have been updated automatically
+
+Note: If you don't see the change immediately on the website, try refreshing the page.`
+      });
+    } catch (error) {
+      console.error("Error updating theme:", error);
+      setThemeAlert({
+        visible: true,
+        message: "Failed to update theme preference. Please check your connection and try again."
+      });
     }
   };
 
   const settingsOptions = [
+    {
+      id: "theme",
+      title: "Theme",
+      description: `Currently set to ${selectedThemeOption.label}`,
+      icon: "color-palette",
+      type: "theme",
+      value: selectedThemeOption,
+      onValueChange: handleThemeChange,
+    },
     {
       id: "currency",
       title: "Currency",
@@ -164,7 +197,9 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
       key={item.id}
       style={[
         styles.settingItem,
+        { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border },
         item.type === "currency" && styles.currencySettingItem,
+        item.type === "theme" && styles.themeSettingItem,
       ]}
     >
       <View style={styles.settingLeft}>
@@ -172,8 +207,8 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
           <Ionicons name={item.icon} size={20} color={theme.colors.primary} />
         </View>
         <View style={styles.settingInfo}>
-          <Text style={styles.settingTitle}>{item.title}</Text>
-          <Text style={styles.settingDescription}>{item.description}</Text>
+          <Text style={[styles.settingTitle, { color: theme.colors.text }]}>{item.title}</Text>
+          <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>{item.description}</Text>
         </View>
       </View>
       {item.type === "switch" ? (
@@ -191,6 +226,14 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
             isLoading={currency.isLoading}
           />
         </View>
+      ) : item.type === "theme" ? (
+        <View style={styles.themePickerContainer}>
+          <ThemePicker
+            selectedTheme={item.value}
+            onThemeSelect={item.onValueChange}
+            disabled={false}
+          />
+        </View>
       ) : null}
     </View>
   );
@@ -198,7 +241,7 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
   const renderActionItem = (item: any) => (
     <TouchableOpacity
       key={item.id}
-      style={styles.actionItem}
+      style={[styles.actionItem, { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border }]}
       onPress={item.onPress}
       activeOpacity={0.7}
     >
@@ -207,27 +250,23 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
           <Ionicons name={item.icon} size={20} color={theme.colors.primary} />
         </View>
         <View style={styles.settingInfo}>
-          <Text style={styles.settingTitle}>{item.title}</Text>
-          <Text style={styles.settingDescription}>{item.description}</Text>
+          <Text style={[styles.settingTitle, { color: theme.colors.text }]}>{item.title}</Text>
+          <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>{item.description}</Text>
         </View>
       </View>
-      <Ionicons name="chevron-forward" size={20} color="#666" />
+      <Ionicons name="chevron-forward" size={20} color={theme.colors.textSecondary} />
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <StatusBar
-        barStyle="light-content"
+        barStyle={"light-content"}
         backgroundColor="#6e11b0"
         translucent
       />
       <LinearGradient
-        colors={[
-          theme.colors.primary,
-          theme.colors.primary,
-          theme.colors.secondary,
-        ]}
+        colors={["#6e11b0", "#6e11b0", "#1c398e"]}
         locations={[0, 0.3, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -260,15 +299,15 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
           />
         }
       >
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Preferences</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Preferences</Text>
           <View style={styles.sectionContent}>
             {settingsOptions.map(renderSettingItem)}
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>General</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>General</Text>
           <View style={styles.sectionContent}>
             {actionOptions.map(renderActionItem)}
           </View>
@@ -282,6 +321,23 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
           </Text>
         </View>
       </ScrollView>
+
+      {/* Themed Alerts */}
+      <ThemedAlert
+        visible={currencyAlert.visible}
+        title="Currency Updated Successfully! 🎉"
+        message={currencyAlert.message}
+        onClose={() => setCurrencyAlert({ visible: false, message: "" })}
+        icon="checkmark-circle"
+      />
+
+      <ThemedAlert
+        visible={themeAlert.visible}
+        title="Theme Updated Successfully! 🎨"
+        message={themeAlert.message}
+        onClose={() => setThemeAlert({ visible: false, message: "" })}
+        icon="color-palette"
+      />
     </View>
   );
 }
@@ -289,7 +345,6 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
   },
   header: {
     paddingHorizontal: 20,
@@ -339,12 +394,10 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#333",
     marginBottom: 12,
     marginLeft: 4,
   },
   sectionContent: {
-    backgroundColor: "#ffffff",
     borderRadius: 12,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -358,9 +411,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
   },
   currencySettingItem: {
+    flexDirection: "column",
+    alignItems: "stretch",
+    paddingBottom: 20,
+  },
+  themeSettingItem: {
     flexDirection: "column",
     alignItems: "stretch",
     paddingBottom: 20,
@@ -371,7 +428,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
   },
   settingLeft: {
     flexDirection: "row",
@@ -402,6 +458,9 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   currencyPickerContainer: {
+    marginTop: 12,
+  },
+  themePickerContainer: {
     marginTop: 12,
   },
   appInfo: {

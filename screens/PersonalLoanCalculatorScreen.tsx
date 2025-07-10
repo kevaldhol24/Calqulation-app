@@ -12,9 +12,10 @@ import { ToolHeader } from "../components/ToolHeader";
 import { useWebViewBackNavigation } from "../hooks";
 import { WebViewCookieInjector } from "../utils/webViewCookies";
 import { createCurrencyCookieScript } from "../utils/currencyManager";
+import { createThemeLocalStorageScript } from "../utils/themeManager";
 
 export default function PersonalLoanCalculatorScreen() {
-  const theme = useTheme();
+  const { theme, selectedThemeOption } = useTheme();
   const currency = useCurrency();
   const webViewRef = useRef<WebView>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,12 +39,16 @@ export default function PersonalLoanCalculatorScreen() {
   const handleWebViewLoad = () => {
     setIsLoading(false);
 
-    // Inject current currency cookie on load
+    // Inject current currency cookie and theme on load
     if (webViewRef.current && !currency.isLoading) {
       const cookieScript = createCurrencyCookieScript(
         currency.selectedCurrency
       );
       webViewRef.current.injectJavaScript(cookieScript);
+      
+      // Also inject theme
+      const themeScript = createThemeLocalStorageScript(selectedThemeOption);
+      webViewRef.current.injectJavaScript(themeScript);
     }
   };
 

@@ -12,9 +12,10 @@ import { ToolHeader } from "../components/ToolHeader";
 import { useWebViewBackNavigation } from "../hooks";
 import { WebViewCookieInjector } from "../utils/webViewCookies";
 import { createCurrencyCookieScript } from "../utils/currencyManager";
+import { createThemeLocalStorageScript } from "../utils/themeManager";
 
 export default function EMICalculatorScreen() {
-  const theme = useTheme();
+  const { theme, selectedThemeOption } = useTheme();
   const currency = useCurrency();
   const webViewRef = useRef<WebView>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,12 +39,16 @@ export default function EMICalculatorScreen() {
   const handleWebViewLoad = () => {
     setIsLoading(false);
 
-    // Inject current currency cookie on load
+    // Inject current currency cookie and theme on load
     if (webViewRef.current && !currency.isLoading) {
       const cookieScript = createCurrencyCookieScript(
         currency.selectedCurrency
       );
       webViewRef.current.injectJavaScript(cookieScript);
+      
+      // Also inject theme
+      const themeScript = createThemeLocalStorageScript(selectedThemeOption);
+      webViewRef.current.injectJavaScript(themeScript);
     }
   };
 
@@ -61,16 +66,16 @@ export default function EMICalculatorScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <ToolHeader
         title="EMI Calculator"
         icon="calculator"
         onRefresh={handleRefresh}
       />
       {error ? (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-          <Text style={styles.retryText}>Pull to refresh to try again</Text>
+        <View style={[styles.errorContainer, { backgroundColor: theme.colors.background }]}>
+          <Text style={[styles.errorText, { color: theme.colors.error }]}>{error}</Text>
+          <Text style={[styles.retryText, { color: theme.colors.textSecondary }]}>Pull to refresh to try again</Text>
         </View>
       ) : (
         <>
@@ -87,9 +92,9 @@ export default function EMICalculatorScreen() {
             onNavigationStateChange={handleNavigationStateChange}
             {...WEBVIEW_CONFIG}
             renderLoading={() => (
-              <View style={styles.loadingContainer}>
+              <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
                 <ActivityIndicator size="large" color={theme.colors.info} />
-                <Text style={styles.loadingText}>
+                <Text style={[styles.loadingText, { color: theme.colors.text }]}>
                   Loading EMI Calculator...
                 </Text>
               </View>
@@ -97,9 +102,9 @@ export default function EMICalculatorScreen() {
           />
 
           {isLoading && (
-            <View style={styles.loadingOverlay}>
+            <View style={[styles.loadingOverlay, { backgroundColor: `${theme.colors.background}F0` }]}>
               <ActivityIndicator size="large" color={theme.colors.info} />
-              <Text style={styles.loadingText}>Loading EMI Calculator...</Text>
+              <Text style={[styles.loadingText, { color: theme.colors.text }]}>Loading EMI Calculator...</Text>
             </View>
           )}
         </>
@@ -111,7 +116,6 @@ export default function EMICalculatorScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fafbff",
   },
   webview: {
     flex: 1,
@@ -122,7 +126,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "#f5f5f5",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -132,14 +135,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(245, 245, 245, 0.95)",
     alignItems: "center",
     justifyContent: "center",
   },
   loadingText: {
     marginTop: 10,
     fontSize: 16,
-    color: "#333",
     fontWeight: "500",
   },
   errorContainer: {
@@ -147,18 +148,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#f5f5f5",
   },
   errorText: {
     fontSize: 18,
-    color: "#FF6B6B",
     textAlign: "center",
     marginBottom: 10,
     fontWeight: "600",
   },
   retryText: {
     fontSize: 14,
-    color: "#888888",
     textAlign: "center",
   },
 });

@@ -9,6 +9,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "../context/ThemeContext";
 
 interface ToolHeaderProps {
   title: string;
@@ -22,6 +23,10 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
   onRefresh,
 }) => {
   const insets = useSafeAreaInsets();
+  const { theme } = useTheme();
+
+  // Create styles based on current theme
+  const styles = createStyles(theme);
 
   return (
     <>
@@ -55,7 +60,7 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   headerGradient: {
     paddingBottom: 15,
     paddingHorizontal: 20,

@@ -35,9 +35,12 @@ interface HomeScreenProps {
 }
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
+
+  // Create styles based on current theme
+  const styles = createStyles(theme);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -208,11 +211,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         translucent
       />
       <LinearGradient
-        colors={[
-          theme.colors.primary,
-          theme.colors.primary,
-          theme.colors.secondary,
-        ]}
+        colors={["#6e11b0", "#6e11b0", "#1c398e"]}
         locations={[0, 0.3, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -250,7 +249,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       >
         <View style={styles.welcomeSection}>
           <LinearGradient
-            colors={["#ffffff", "#f8f9ff"]}
+            colors={[theme.colors.surface, theme.colors.background]}
             style={styles.welcomeGradient}
           >
             <View style={styles.welcomeHeader}>
@@ -369,10 +368,10 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
 const { width } = Dimensions.get("window");
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fafbff",
+    backgroundColor: theme.colors.background,
   },
   header: {
     paddingHorizontal: 20,
@@ -412,7 +411,7 @@ const styles = StyleSheet.create({
   welcomeSection: {
     margin: 16,
     borderRadius: 16,
-    shadowColor: "#000",
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -431,11 +430,11 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#f0f0ff",
+    backgroundColor: theme.colors.surface,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 16,
-    shadowColor: "#6e11b0",
+    shadowColor: theme.colors.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -447,13 +446,13 @@ const styles = StyleSheet.create({
   welcomeTitle: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#333",
+    color: theme.colors.text,
     marginBottom: 8,
     letterSpacing: -0.5,
   },
   welcomeText: {
     fontSize: 15,
-    color: "#666",
+    color: theme.colors.textSecondary,
     lineHeight: 22,
     letterSpacing: -0.2,
   },
@@ -463,7 +462,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: "#f0f0f0",
+    borderTopColor: theme.colors.border,
   },
   statItem: {
     alignItems: "center",
@@ -472,19 +471,19 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#6e11b0",
+    color: theme.colors.primary,
     marginBottom: 2,
   },
   statLabel: {
     fontSize: 12,
-    color: "#666",
+    color: theme.colors.textSecondary,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   statDivider: {
     width: 1,
     height: 24,
-    backgroundColor: "#e0e0e0",
+    backgroundColor: theme.colors.border,
   },
   featuresSection: {
     paddingHorizontal: 16,
@@ -493,10 +492,10 @@ const styles = StyleSheet.create({
   featureRow: {
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "#ffffff",
+    backgroundColor: theme.colors.surface,
     paddingVertical: 20,
     borderRadius: 16,
-    shadowColor: "#000",
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -516,7 +515,7 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 13,
-    color: "#666",
+    color: theme.colors.textSecondary,
     marginTop: 4,
     textAlign: "center",
     fontWeight: "500",
@@ -528,13 +527,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#333",
+    color: theme.colors.text,
     marginBottom: 6,
     letterSpacing: -0.5,
   },
   sectionSubtitle: {
     fontSize: 15,
-    color: "#666",
+    color: theme.colors.textSecondary,
     marginBottom: 20,
     lineHeight: 22,
     letterSpacing: -0.2,
@@ -553,9 +552,9 @@ const styles = StyleSheet.create({
   // Modern card styles
   modernCard: {
     width: (width - 48) / 2, // Two cards per row with 16px margins and gap
-    backgroundColor: "#ffffff",
+    backgroundColor: theme.colors.surface,
     borderRadius: 16,
-    shadowColor: "#000",
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -579,18 +578,18 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
   },
   modernComingSoonBadge: {
-    backgroundColor: "#FF6B35",
+    backgroundColor: theme.colors.warning,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
-    shadowColor: "#FF6B35",
+    shadowColor: theme.colors.warning,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -610,13 +609,13 @@ const styles = StyleSheet.create({
   modernToolTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#333",
+    color: theme.colors.text,
     marginBottom: 6,
     letterSpacing: -0.3,
   },
   modernToolDescription: {
     fontSize: 13,
-    color: "#666",
+    color: theme.colors.textSecondary,
     lineHeight: 18,
     letterSpacing: -0.1,
   },
@@ -625,10 +624,10 @@ const styles = StyleSheet.create({
   },
   // Legacy styles for backward compatibility
   toolCard: {
-    backgroundColor: "#ffffff",
+    backgroundColor: theme.colors.surface,
     borderRadius: 12,
     borderLeftWidth: 4,
-    shadowColor: "#000",
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -659,22 +658,23 @@ const styles = StyleSheet.create({
   toolTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    color: theme.colors.text,
     flex: 1,
   },
   toolDescription: {
     fontSize: 14,
-    color: "#666",
+    color: theme.colors.textSecondary,
     lineHeight: 18,
   },
   disabledCard: {
-    opacity: 0.6,
+    opacity: 0.8,
   },
   disabledText: {
-    color: "#ccc",
+    color: theme.colors.textLight,
+    opacity: 0.8,
   },
   comingSoonBadge: {
-    backgroundColor: "#FF9800",
+    backgroundColor: theme.colors.warning,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 12,

@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -10,12 +10,28 @@ import {
   BlogScreen,
   SettingsScreen,
 } from "../screens";
+import { useTheme } from "../context/ThemeContext";
 
 const Tab = createBottomTabNavigator();
 
 export default function AppNavigator() {
+  const { theme, isDark } = useTheme();
+
+  // Create a custom theme for React Navigation
+  const navigationTheme = {
+    ...(isDark ? DarkTheme : DefaultTheme),
+    colors: {
+      ...(isDark ? DarkTheme.colors : DefaultTheme.colors),
+      primary: theme.colors.primary,
+      background: theme.colors.background,
+      card: theme.colors.surface,
+      text: theme.colors.text,
+      border: theme.colors.border,
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -39,15 +55,17 @@ export default function AppNavigator() {
               <Ionicons name={iconName as any} size={size} color={color} />
             );
           },
-          tabBarActiveTintColor: "#6e11b0",
-          tabBarInactiveTintColor: "#888",
+          tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: theme.colors.textSecondary,
           tabBarStyle: {
-            backgroundColor: "#ffffff",
+            backgroundColor: theme.colors.surface,
             borderTopWidth: 1,
-            borderTopColor: "#e0e0e0",
+            borderTopColor: theme.colors.border,
             paddingBottom: 8,
             paddingTop: 8,
-            height: 80,
+            height: 70,
+            elevation: 0,
+            shadowOpacity: 0,
           },
           tabBarLabelStyle: {
             fontSize: 12,

@@ -5,13 +5,31 @@ import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppNavigator from './navigation/AppNavigator';
-import { ThemeProvider, theme } from './context/ThemeContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { CurrencyProvider } from './context/CurrencyContext';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+// Create a themed splash screen component
+const ThemedSplashScreen = () => {
+  const { theme } = useTheme();
+  
+  return (
+    <LinearGradient
+      colors={[theme.colors.primary, theme.colors.secondary]}
+      style={styles.splashContainer}
+    >
+      <StatusBar style="light" />
+      <Text style={styles.splashText}>Calqulation</Text>
+      <ActivityIndicator size="large" color="#ffffff" style={styles.splashLoader} />
+    </LinearGradient>
+  );
+};
+
+// Main app content that uses theme
+const AppContent = () => {
+  const { theme, isLoading } = useTheme();
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
@@ -42,33 +60,30 @@ export default function App() {
     }
   }, [appIsReady]);
 
-  if (!appIsReady) {
+  if (!appIsReady || isLoading) {
     return (
-      <ThemeProvider>
-        <SafeAreaProvider>
-          <LinearGradient
-            colors={[theme.colors.primary, theme.colors.secondary]}
-            style={styles.splashContainer}
-          >
-            <StatusBar style="light" />
-            <Text style={styles.splashText}>Calqulation</Text>
-            <ActivityIndicator size="large" color="#ffffff" style={styles.splashLoader} />
-          </LinearGradient>
-        </SafeAreaProvider>
-      </ThemeProvider>
+      <SafeAreaProvider>
+        <ThemedSplashScreen />
+      </SafeAreaProvider>
     );
   }
 
   return (
+    <CurrencyProvider>
+      <SafeAreaProvider>
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]} onLayout={onLayoutRootView}>
+          <StatusBar style="light" backgroundColor={theme.colors.primary} translucent={false} />
+          <AppNavigator />
+        </View>
+      </SafeAreaProvider>
+    </CurrencyProvider>
+  );
+};
+
+export default function App() {
+  return (
     <ThemeProvider>
-      <CurrencyProvider>
-        <SafeAreaProvider>
-          <View style={styles.container} onLayout={onLayoutRootView}>
-            <StatusBar style="light" />
-            <AppNavigator />
-          </View>
-        </SafeAreaProvider>
-      </CurrencyProvider>
+      <AppContent />
     </ThemeProvider>
   );
 }

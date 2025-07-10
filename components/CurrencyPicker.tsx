@@ -30,9 +30,12 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
   disabled = false,
   isLoading = false,
 }) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
   const [updating, setUpdating] = useState(false);
+
+  // Create styles based on current theme
+  const styles = createStyles(theme);
 
   const handleCurrencySelect = async (currency: CurrencyOption) => {
     setUpdating(true);
@@ -101,7 +104,7 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
           <Ionicons
             name="chevron-down"
             size={20}
-            color={disabled || isLoading || updating ? "#ccc" : "#666"}
+            color={disabled || isLoading || updating ? theme.colors.textLight : theme.colors.textSecondary}
           />
         )}
       </TouchableOpacity>
@@ -124,7 +127,7 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
                 <Ionicons
                   name="close"
                   size={24}
-                  color={updating ? "#ccc" : "#333"}
+                  color={updating ? theme.colors.textLight : theme.colors.textSecondary}
                 />
               </TouchableOpacity>
             </View>
@@ -153,16 +156,16 @@ export const CurrencyPicker: React.FC<CurrencyPickerProps> = ({
 
 const { height: screenHeight } = Dimensions.get("window");
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   pickerButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#f8f9fa",
+    backgroundColor: theme.colors.surface,
     padding: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#e9ecef",
+    borderColor: theme.colors.border,
   },
   disabledButton: {
     opacity: 0.5,
@@ -183,12 +186,12 @@ const styles = StyleSheet.create({
   selectedSymbol: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    color: theme.colors.text,
     marginRight: 8,
   },
   selectedCurrency: {
     fontSize: 14,
-    color: "#666",
+    color: theme.colors.textSecondary,
     fontWeight: "500",
   },
   modalOverlay: {
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: "#fff",
+    backgroundColor: theme.colors.background,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: screenHeight * 0.7,
@@ -209,12 +212,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#e9ecef",
+    borderBottomColor: theme.colors.border,
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#333",
+    color: theme.colors.text,
   },
   closeButton: {
     padding: 4,
@@ -230,12 +233,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 12,
     marginVertical: 4,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: theme.colors.surface,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
   },
   selectedCurrencyItem: {
-    backgroundColor: "#6e11b020",
-    borderWidth: 1,
-    borderColor: "#6e11b040",
+    backgroundColor: theme.colors.primary + '20',
+    borderColor: theme.colors.primary + '40',
   },
   currencyItemLeft: {
     flexDirection: "row",
@@ -249,16 +253,16 @@ const styles = StyleSheet.create({
   currencySymbol: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    color: theme.colors.text,
   },
   currencyCode: {
     fontSize: 12,
-    color: "#666",
+    color: theme.colors.textSecondary,
     fontWeight: "500",
   },
   currencyLabel: {
     fontSize: 14,
-    color: "#333",
+    color: theme.colors.text,
     flex: 1,
   },
   loadingOverlay: {
@@ -267,7 +271,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    backgroundColor: theme.colors.background + 'E6',
     alignItems: "center",
     justifyContent: "center",
     zIndex: 10,
@@ -275,7 +279,7 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: "#333",
+    color: theme.colors.text,
     fontWeight: "500",
   },
   disabledList: {
