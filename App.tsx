@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import * as SplashScreen from 'expo-splash-screen';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import AppNavigator from './navigation/AppNavigator';
-import { ThemeProvider, useTheme } from './context/ThemeContext';
-import { CurrencyProvider } from './context/CurrencyContext';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
+import AppNavigator from "./navigation/AppNavigator";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
+import { SafeAreaWrapper } from "./components";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -14,15 +15,21 @@ SplashScreen.preventAutoHideAsync();
 // Create a themed splash screen component
 const ThemedSplashScreen = () => {
   const { theme } = useTheme();
-  
+
   return (
     <LinearGradient
       colors={[theme.colors.primary, theme.colors.secondary]}
       style={styles.splashContainer}
     >
       <StatusBar style="light" />
-      <Text style={styles.splashText}>Calqulation</Text>
-      <ActivityIndicator size="large" color="#ffffff" style={styles.splashLoader} />
+      <SafeAreaView style={styles.splashContent}>
+        <Text style={styles.splashText}>Calqulation</Text>
+        <ActivityIndicator
+          size="large"
+          color="#ffffff"
+          style={styles.splashLoader}
+        />
+      </SafeAreaView>
     </LinearGradient>
   );
 };
@@ -37,7 +44,7 @@ const AppContent = () => {
       try {
         // Pre-load fonts, make any API calls you need to do here
         // For now, just simulate a short loading time
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -62,20 +69,25 @@ const AppContent = () => {
 
   if (!appIsReady || isLoading) {
     return (
-      <SafeAreaProvider>
+      <SafeAreaWrapper>
         <ThemedSplashScreen />
-      </SafeAreaProvider>
+      </SafeAreaWrapper>
     );
   }
 
   return (
     <CurrencyProvider>
-      <SafeAreaProvider>
-        <View style={[styles.container, { backgroundColor: theme.colors.background }]} onLayout={onLayoutRootView}>
-          <StatusBar style="light" backgroundColor={theme.colors.primary} translucent={false} />
-          <AppNavigator />
-        </View>
-      </SafeAreaProvider>
+      <SafeAreaWrapper
+        style={{ backgroundColor: theme.colors.background }}
+        onLayout={onLayoutRootView}
+      >
+        <StatusBar
+          style="light"
+          backgroundColor={theme.colors.primary}
+          translucent={false}
+        />
+        <AppNavigator />
+      </SafeAreaWrapper>
     </CurrencyProvider>
   );
 };
@@ -94,15 +106,20 @@ const styles = StyleSheet.create({
   },
   splashContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  splashContent: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   splashText: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: '#ffffff',
+    fontWeight: "bold",
+    color: "#ffffff",
     marginBottom: 30,
-    textShadowColor: 'rgba(255, 255, 255, 0.3)',
+    textShadowColor: "rgba(255, 255, 255, 0.3)",
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 8,
   },

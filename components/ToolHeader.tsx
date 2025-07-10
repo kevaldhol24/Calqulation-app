@@ -37,10 +37,10 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
       />
       <LinearGradient
         colors={["#6e11b0", "#6e11b0", "#1c398e"]}
-        locations={[0, 0.3, 1]}
+        locations={[0, 0.05, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
-        style={[styles.headerGradient, { paddingTop: insets.top + 15 }]}
+        style={[styles.headerGradient, { paddingTop: insets.top - 16 }]}
       >
         <View style={styles.headerContent}>
           <View style={styles.headerLeft}>

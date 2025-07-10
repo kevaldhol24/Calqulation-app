@@ -298,7 +298,7 @@ Note: If you don't see the change immediately on the website, try refreshing the
         locations={[0, 0.3, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
-        style={[styles.header, { paddingTop: insets.top + 20 }]}
+        style={[styles.header, { paddingTop: insets.top - 16 }]}
       >
         <View style={styles.headerContent}>
           <View style={styles.headerLeft}>

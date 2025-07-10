@@ -215,7 +215,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         locations={[0, 0.3, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
-        style={[styles.header, { paddingTop: insets.top + 20 }]}
+        style={[styles.header, { paddingTop: insets.top - 16 }]}
       >
         <View style={styles.headerContent}>
           <View>
@@ -276,8 +276,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               </View>
               <View style={styles.statDivider} />
               <View style={styles.statItem}>
-                <Text style={styles.statNumber}>Free</Text>
-                <Text style={styles.statLabel}>Forever</Text>
+                <Text style={styles.statNumber}>Advance</Text>
+                <Text style={styles.statLabel}>Tools</Text>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.statItem}>

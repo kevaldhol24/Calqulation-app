@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AppStateStatus } from "react-native";
 
 import HomeStackNavigator from "./HomeStackNavigator";
 import {
@@ -11,11 +13,24 @@ import {
   SettingsScreen,
 } from "../screens";
 import { useTheme } from "../context/ThemeContext";
+import { useAppState } from "../hooks";
 
 const Tab = createBottomTabNavigator();
 
 export default function AppNavigator() {
   const { theme, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // Handle app state changes to refresh safe area
+  const handleAppStateChange = useCallback((nextAppState: AppStateStatus) => {
+    if (nextAppState === 'active') {
+      // Force a re-render when app becomes active to refresh safe area
+      setRefreshKey(prev => prev + 1);
+    }
+  }, []);
+
+  useAppState(handleAppStateChange);
 
   // Create a custom theme for React Navigation
   const navigationTheme = {
@@ -31,7 +46,7 @@ export default function AppNavigator() {
   };
 
   return (
-    <NavigationContainer theme={navigationTheme}>
+    <NavigationContainer theme={navigationTheme} key={refreshKey}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
