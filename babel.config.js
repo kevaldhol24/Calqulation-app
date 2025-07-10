@@ -1,20 +1,9 @@
 module.exports = function (api) {
   api.cache(true);
   
-  const isProduction = process.env.NODE_ENV === 'production';
-  
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      // Remove console statements in production
-      ...(isProduction 
-        ? [
-            ['transform-remove-console', { exclude: ['error', 'warn'] }],
-            ['transform-remove-debugger']
-          ] 
-        : []
-      ),
-      // Optimize imports
       [
         'module-resolver',
         {

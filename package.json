@@ -7,13 +7,12 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build:android:apk": "eas build --platform android --profile preview",
-    "build:android:aab": "eas build --platform android --profile production",
-    "build:android:local": "eas build --platform android --profile preview --local",
-    "analyze:bundle": "npx expo export --dump-assetmap",
-    "clean": "rm -rf node_modules/.cache && rm -rf .expo && npm cache clean --force",
     "prebuild": "expo prebuild --clean",
-    "type-check": "tsc --noEmit"
+    "prebuild:android": "expo prebuild --platform android --clean",
+    "build:apk": "cd android && ./gradlew assembleRelease",
+    "build:aab": "cd android && ./gradlew bundleRelease",
+    "clean": "rm -rf node_modules/.cache && rm -rf .expo && npm cache clean --force",
+    "clean:android": "cd android && ./gradlew clean"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
@@ -39,9 +38,6 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
-    "babel-plugin-module-resolver": "^5.0.2",
-    "babel-plugin-transform-remove-console": "^6.9.4",
-    "babel-plugin-transform-remove-debugger": "^6.9.4",
     "typescript": "~5.8.3"
   },
   "private": true
