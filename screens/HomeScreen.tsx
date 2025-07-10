@@ -151,7 +151,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         <LinearGradient
           colors={
             tool.disabled
-              ? ["#f0f0f0", "#e0e0e0"]
+              ? [theme.colors.surface + "80", theme.colors.surface + "60"]
               : [tool.color + "15", tool.color + "05"]
           }
           style={styles.cardGradient}
@@ -160,7 +160,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             <View
               style={[
                 styles.modernIconContainer,
-                { backgroundColor: tool.disabled ? "#ccc" : tool.color },
+                { backgroundColor: tool.disabled ? theme.colors.textSecondary + "80" : tool.color },
               ]}
             >
               <Ionicons name={tool.icon as any} size={24} color="#ffffff" />
@@ -195,7 +195,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             <Ionicons
               name="arrow-forward"
               size={16}
-              color={tool.disabled ? "#ccc" : tool.color}
+              color={tool.disabled ? theme.colors.textSecondary : tool.color}
             />
           </View>
         </LinearGradient>
@@ -667,11 +667,12 @@ const createStyles = (theme: any) => StyleSheet.create({
     lineHeight: 18,
   },
   disabledCard: {
-    opacity: 0.8,
+    opacity: 0.6,
+    backgroundColor: theme.colors.surface,
   },
   disabledText: {
-    color: theme.colors.textLight,
-    opacity: 0.8,
+    color: theme.colors.textSecondary,
+    opacity: 0.7,
   },
   comingSoonBadge: {
     backgroundColor: theme.colors.warning,

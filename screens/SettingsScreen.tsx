@@ -1,33 +1,23 @@
-import React, { useState, useCallback } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Switch,
-  Linking,
-  RefreshControl,
-  StatusBar,
-  Alert,
-} from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useTheme } from "../context/ThemeContext";
-import { useCurrency } from "../context/CurrencyContext";
-import { CurrencyPicker, ThemePicker, ThemedAlert } from "../components";
+import React, { useCallback, useState } from "react";
 import {
-  CurrencyOption,
-  getDefaultCurrency,
-  createCurrencyCookieScript,
-  currencyUtils,
-} from "../utils/currencyManager";
+  Linking,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { CurrencyPicker, ThemePicker, ThemedAlert } from "../components";
+import { useCurrency } from "../context/CurrencyContext";
+import { useTheme } from "../context/ThemeContext";
+import { CurrencyOption } from "../utils/currencyManager";
 import { ThemeOption } from "../utils/themeManager";
-import { WebViewCookieInjector } from "../utils/webViewCookies";
 
 export default function SettingsScreen() {
   const { theme, selectedThemeOption, setTheme } = useTheme();
@@ -36,7 +26,10 @@ export default function SettingsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [notifications, setNotifications] = React.useState(true);
   const [autoRefresh, setAutoRefresh] = React.useState(true);
-  const [currencyAlert, setCurrencyAlert] = useState({ visible: false, message: "" });
+  const [currencyAlert, setCurrencyAlert] = useState({
+    visible: false,
+    message: "",
+  });
   const [themeAlert, setThemeAlert] = useState({ visible: false, message: "" });
 
   const onRefresh = useCallback(() => {
@@ -71,15 +64,15 @@ export default function SettingsScreen() {
 
 ✅ All calculator tools will now use ${selectedCurrency.currency}
 ✅ Your preference has been saved and will persist between app sessions
-✅ Open WebViews have been updated automatically
 
-Note: If you don't see the change immediately, try refreshing the calculator page.`
+Note: If you don't see the change immediately, try refreshing the calculator page.`,
       });
     } catch (error) {
       console.error("Error updating currency:", error);
       setCurrencyAlert({
         visible: true,
-        message: "Failed to update currency preference. Please check your connection and try again."
+        message:
+          "Failed to update currency preference. Please check your connection and try again.",
       });
     }
   };
@@ -95,15 +88,15 @@ Note: If you don't see the change immediately, try refreshing the calculator pag
 
 ✅ The app theme has been updated
 ✅ Your preference has been saved and will persist between app sessions
-✅ Open WebViews have been updated automatically
 
-Note: If you don't see the change immediately on the website, try refreshing the page.`
+Note: If you don't see the change immediately on the website, try refreshing the page.`,
       });
     } catch (error) {
       console.error("Error updating theme:", error);
       setThemeAlert({
         visible: true,
-        message: "Failed to update theme preference. Please check your connection and try again."
+        message:
+          "Failed to update theme preference. Please check your connection and try again.",
       });
     }
   };
@@ -192,12 +185,16 @@ Note: If you don't see the change immediately on the website, try refreshing the
     },
   ];
 
-  const renderSettingItem = (item: any) => (
+  const renderSettingItem = (item: any, index: number, list: any[]) => (
     <View
       key={item.id}
       style={[
         styles.settingItem,
-        { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border },
+        {
+          backgroundColor: theme.colors.surface,
+          borderBottomColor: theme.colors.border,
+          borderBottomWidth: index === list.length - 1 ? 0 : 1,
+        },
         item.type === "currency" && styles.currencySettingItem,
         item.type === "theme" && styles.themeSettingItem,
       ]}
@@ -207,8 +204,17 @@ Note: If you don't see the change immediately on the website, try refreshing the
           <Ionicons name={item.icon} size={20} color={theme.colors.primary} />
         </View>
         <View style={styles.settingInfo}>
-          <Text style={[styles.settingTitle, { color: theme.colors.text }]}>{item.title}</Text>
-          <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>{item.description}</Text>
+          <Text style={[styles.settingTitle, { color: theme.colors.text }]}>
+            {item.title}
+          </Text>
+          <Text
+            style={[
+              styles.settingDescription,
+              { color: theme.colors.textSecondary },
+            ]}
+          >
+            {item.description}
+          </Text>
         </View>
       </View>
       {item.type === "switch" ? (
@@ -238,10 +244,17 @@ Note: If you don't see the change immediately on the website, try refreshing the
     </View>
   );
 
-  const renderActionItem = (item: any) => (
+  const renderActionItem = (item: any, index: number, list: any[]) => (
     <TouchableOpacity
       key={item.id}
-      style={[styles.actionItem, { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border }]}
+      style={[
+        styles.actionItem,
+        {
+          backgroundColor: theme.colors.surface,
+          borderBottomColor: theme.colors.border,
+          borderBottomWidth: index === list.length - 1 ? 0 : 1,
+        },
+      ]}
       onPress={item.onPress}
       activeOpacity={0.7}
     >
@@ -250,16 +263,31 @@ Note: If you don't see the change immediately on the website, try refreshing the
           <Ionicons name={item.icon} size={20} color={theme.colors.primary} />
         </View>
         <View style={styles.settingInfo}>
-          <Text style={[styles.settingTitle, { color: theme.colors.text }]}>{item.title}</Text>
-          <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>{item.description}</Text>
+          <Text style={[styles.settingTitle, { color: theme.colors.text }]}>
+            {item.title}
+          </Text>
+          <Text
+            style={[
+              styles.settingDescription,
+              { color: theme.colors.textSecondary },
+            ]}
+          >
+            {item.description}
+          </Text>
         </View>
       </View>
-      <Ionicons name="chevron-forward" size={20} color={theme.colors.textSecondary} />
+      <Ionicons
+        name="chevron-forward"
+        size={20}
+        color={theme.colors.textSecondary}
+      />
     </TouchableOpacity>
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       <StatusBar
         barStyle={"light-content"}
         backgroundColor="#6e11b0"
@@ -299,15 +327,19 @@ Note: If you don't see the change immediately on the website, try refreshing the
           />
         }
       >
-        <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Preferences</Text>
+        <View style={[styles.section]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+            Preferences
+          </Text>
           <View style={styles.sectionContent}>
             {settingsOptions.map(renderSettingItem)}
           </View>
         </View>
 
-        <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>General</Text>
+        <View style={[styles.section]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+            General
+          </Text>
           <View style={styles.sectionContent}>
             {actionOptions.map(renderActionItem)}
           </View>
@@ -315,7 +347,7 @@ Note: If you don't see the change immediately on the website, try refreshing the
 
         <View style={styles.appInfo}>
           <Text style={styles.appName}>Calqulation</Text>
-          <Text style={styles.appVersion}>Version 1.0.0</Text>
+          <Text style={styles.appVersion}>Version 1.0.3</Text>
           <Text style={styles.appDescription}>
             Your trusted companion for financial calculations and planning
           </Text>
@@ -399,6 +431,7 @@ const styles = StyleSheet.create({
   },
   sectionContent: {
     borderRadius: 12,
+    overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -467,6 +500,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 24,
     marginTop: 20,
+    paddingBottom: 80,
   },
   appName: {
     fontSize: 24,
