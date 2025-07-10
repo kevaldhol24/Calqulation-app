@@ -30,11 +30,7 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
 
   return (
     <>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="#6e11b0"
-        translucent
-      />
+      <StatusBar barStyle="light-content" />
       <LinearGradient
         colors={["#6e11b0", "#6e11b0", "#1c398e"]}
         locations={[0, 0.05, 1]}
@@ -60,42 +56,43 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  headerGradient: {
-    paddingBottom: 15,
-    paddingHorizontal: 20,
-  },
-  headerContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  headerIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#ffffff",
-    letterSpacing: -0.3,
-  },
-  refreshButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    headerGradient: {
+      paddingBottom: 15,
+      paddingHorizontal: 20,
+    },
+    headerContent: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    headerLeft: {
+      flexDirection: "row",
+      alignItems: "center",
+      flex: 1,
+    },
+    headerIconContainer: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: 12,
+    },
+    headerTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: "#ffffff",
+      letterSpacing: -0.3,
+    },
+    refreshButton: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  });

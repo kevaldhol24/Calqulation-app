@@ -288,11 +288,7 @@ Note: If you don't see the change immediately on the website, try refreshing the
     <View
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      <StatusBar
-        barStyle={"light-content"}
-        backgroundColor="#6e11b0"
-        translucent
-      />
+      <StatusBar barStyle={"light-content"} />
       <LinearGradient
         colors={["#6e11b0", "#6e11b0", "#1c398e"]}
         locations={[0, 0.3, 1]}

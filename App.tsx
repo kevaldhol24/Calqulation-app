@@ -81,11 +81,7 @@ const AppContent = () => {
         style={{ backgroundColor: theme.colors.background }}
         onLayout={onLayoutRootView}
       >
-        <StatusBar
-          style="light"
-          backgroundColor={theme.colors.primary}
-          translucent={false}
-        />
+        <StatusBar style="light" />
         <AppNavigator />
       </SafeAreaWrapper>
     </CurrencyProvider>
